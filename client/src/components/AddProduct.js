@@ -16,6 +16,7 @@ function AddProduct() {
         category: productCategory,
         price: productPrice,
       };
+
       await axios.post("http://localhost:8080/product/create", data);
     } catch (error) {
       console.error("Error adding product:", error);
@@ -60,7 +61,7 @@ function AddProduct() {
               <label htmlFor="" className="form-label">
                 Status
               </label>
-              <select className="form-select" aria-label="Default select example" defaultValue={0}>
+              <select className="form-select" aria-label="Default select example" defaultValue={0} onChange={(e) => setProductStatus(e.target.value)}>
                 <option value="0">Category</option>
                 <option value="1">One</option>
                 <option value="2">Two</option>

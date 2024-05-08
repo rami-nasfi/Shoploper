@@ -1,8 +1,24 @@
-import React from "react";
-import { useNavigate } from "react-router-dom"; // Assuming you're using React Router
+import React, { useState, useEffect } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import axios from "axios";
 
 function Product() {
   const navigate = useNavigate();
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    async function fetchProducts() {
+      try {
+        const response = await axios.get("http://localhost:8080/product/");
+        console.log("first");
+        setProducts(response.data);
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      }
+    }
+
+    fetchProducts();
+  }, []);
 
   const handleClick = () => {
     navigate("/add-product");
@@ -40,66 +56,39 @@ function Product() {
                   </div>
                 </th>
                 <th scope="col" className="col-1">
-                  Image
+                  {products.image}
                 </th>
                 <th scope="col">Name</th>
                 <th scope="col">Category</th>
-                <th scope="col" colspan="3">
+                <th scope="col" colSpan="3">
                   Price
                 </th>
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td className="align-middle">
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
-                  </div>
-                </td>
-                <td className="align-middle">
-                  <div class="">
-                    <img
-                      src="https://ayshek.com/wp-content/uploads/2020/05/ca9d45_eb1aa063479640fdb8bc40d2f1d14c27mv2.jpg"
-                      class="roundedw-20 w-16"
-                      alt="..."
-                    />
-                  </div>
-                </td>
-                <td className="align-middle">Harrisa</td>
-                <td className="align-middle">Sauce</td>
-                <td className="align-middle">$18.99</td>
-                <td className="align-middle">
-                  <a href="">U</a>
-                </td>
-                <td className="align-middle">
-                  <a href="">X</a>
-                </td>
-              </tr>
-              <tr>
-                <td className="align-middle">
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
-                  </div>
-                </td>
-                <td className="align-middle">
-                  <div class="">
-                    <img
-                      src="https://ayshek.com/wp-content/uploads/2020/05/ca9d45_eb1aa063479640fdb8bc40d2f1d14c27mv2.jpg"
-                      class="rounded w-16"
-                      alt="..."
-                    />
-                  </div>
-                </td>
-                <td className="align-middle">Harrisa</td>
-                <td className="align-middle">Sauce</td>
-                <td className="align-middle">$18.99</td>
-                <td className="align-middle">
-                  <a href="">U</a>
-                </td>
-                <td className="align-middle">
-                  <a href="">X</a>
-                </td>
-              </tr>
+              {products.map((product) => (
+                <tr key={product.id}>
+                  <td className="align-middle">
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
+                    </div>
+                  </td>
+                  <td className="align-middle">
+                    <div class="">
+                      <img src={product.image} class="rounded w-16" alt={product.name} />
+                    </div>
+                  </td>
+                  <td className="align-middle">{product.name}</td>
+                  <td className="align-middle">{product.category}</td>
+                  <td className="align-middle">{product.price}</td>
+                  <td className="align-middle">
+                    <Link to={`/product/${product.id}`}>U</Link>
+                  </td>
+                  <td className="align-middle">
+                    <a href="">X</a>
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>
