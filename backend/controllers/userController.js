@@ -1,5 +1,7 @@
 const { model } = require("mongoose");
 const User = require("../modules/userModel");
+const bcrypt = require("bcrypt");
+const saltRounds = 10;
 
 //display all
 const getAllUsers = async (req, res) => {
@@ -57,4 +59,45 @@ const deleteUser = async (req, res) => {
   }
 };
 
-module.exports = { getAllUsers, createUser, deleteUser, updateUser, getOneUser };
+//signup user
+const signupUser = async (req, res) => {
+  try {
+    let { email, password, name } = req.body;
+    if (!email || !password || !name) {
+      return res.send({ msg: "Fill the required information" });
+    }
+
+    let user = await User.findOne({ email });
+    if (user) {
+      res.send({ msg: "Email already exist please login or register with a new email" });
+    }
+    let hashPassword = await bcrypt.hash(password, saltRounds);
+    await User.create({ email, password: hashPassword, name });
+    res.send({ email, hashPassword, name });
+  } catch (error) {
+    res.send(error);
+  }
+};
+
+//login user
+const loginUser = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    if (!email || !password) {
+      return res.status(400).send({ msg: "Fill in both email and password" });
+    }
+
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(401).send({ msg: "Invalid email or password" });
+    }
+    const match = await bcrypt.compare(password, user.password);
+    if (!match) {
+      return res.status(401).send({ msg: "Invalid email or password" });
+    }
+    res.send({ msg: "Login successful" });
+  } catch (error) {
+    res.send(error);
+  }
+};
+module.exports = { getAllUsers, createUser, deleteUser, updateUser, getOneUser, loginUser, signupUser };

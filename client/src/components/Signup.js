@@ -1,18 +1,20 @@
 import React, { useState } from "react";
 import axios from "axios";
 
-function Login() {
+function Signup() {
   const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
   const [password, setPassword] = useState("");
 
-  async function login(e) {
+  async function signup(e) {
     e.preventDefault();
     let data = {
+      name,
       email,
       password,
     };
     console.log(data);
-    let res = await axios.get(`http://localhost:8080/user/login/`, data);
+    let res = await axios.post(`http://localhost:8080/user/signup`, data);
 
     console.log(res);
   }
@@ -24,7 +26,13 @@ function Login() {
             <img className="img-fluid rounded-3 " src="./images/signin.png" alt="" />
           </div>
           <div className="col-md-6  d-flex justify-content-center align-items-center ">
-            <form onSubmit={login} className="d-flex gap-3 flex-column w-100">
+            <form onSubmit={signup} className="d-flex gap-3 flex-column w-100">
+              <div className="d-flex flex-column">
+                <label htmlFor="" className="mb-1">
+                  Name
+                </label>
+                <input type="text" className="form-control" name="name" onChange={(e) => setName(e.target.value)} />
+              </div>
               <div className="d-flex flex-column">
                 <label htmlFor="" className="mb-1">
                   Email
@@ -38,23 +46,11 @@ function Login() {
                 <input type="text" className="form-control " name="password" onChange={(e) => setPassword(e.target.value)} />
               </div>
 
-              <div className="d-flex justify-content-between fs-6">
-                <div>
-                  <input type="checkbox" name="" id="" className="form-check-input" />
-                  <label htmlFor="" className="ms-2">
-                    Remember me
-                  </label>
-                </div>
-                <div>
-                  <small>Forget password</small>
-                </div>
-              </div>
-
               <div>
-                <input type="submit" value="Login" className="btn btn-lg btn-primary w-100 fs-6" />
+                <input type="submit" value="Sign up" className="btn btn-lg btn-primary w-100 fs-6" />
               </div>
               <div>
-                <input type="button" value="Sign up" className="btn btn-lg btn-secondary w-100 fs-6" />
+                <input type="button" value="Login" className="btn btn-lg btn-secondary w-100 fs-6" />
               </div>
             </form>
           </div>
@@ -64,4 +60,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default Signup;

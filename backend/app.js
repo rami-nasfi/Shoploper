@@ -7,6 +7,7 @@ const userRouter = require("./routers/userRouter");
 const productRouter = require("./routers/productRouter");
 const customerRouter = require("./routers/customerRouter");
 const orderRouter = require("./routers/orderRouter");
+const storeRouter = require("./routers/storeRouter");
 const cors = require("cors");
 
 //middleware
@@ -20,6 +21,7 @@ app.use("/user", userRouter);
 app.use("/product", productRouter);
 app.use("/order", orderRouter);
 app.use("/customer", customerRouter);
+app.use("/store", storeRouter);
 
 // Start the server
 app.listen(PORT, () => {
