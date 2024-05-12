@@ -7,7 +7,7 @@ let orderSchema = new mongoose.Schema(
     amount: String,
     status: String,
 
-    owner: { type: mongoose.Schema.ObjectId, ref: "customer" },
+    customerID: { type: mongoose.Schema.ObjectId, ref: "customer" },
   },
   { timestamps: true }
 );

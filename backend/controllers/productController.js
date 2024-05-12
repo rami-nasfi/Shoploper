@@ -3,11 +3,19 @@ const Product = require("../modules/productModel");
 
 //display all
 const getAllProducts = async (req, res) => {
+  const page = parseInt(req.query.page) || 1;
+  const perPage = parseInt(req.query.perPage) || 10;
+
   try {
-    let data = await Product.find();
-    res.send(data);
+    const totalProducts = await Product.countDocuments();
+    const totalPages = Math.ceil(totalProducts / perPage);
+
+    const skip = (page - 1) * perPage;
+    const products = await Product.find().skip(skip).limit(perPage).populate("categoryID");
+    console.log(totalPages);
+    res.send({ products, totalPages });
   } catch (error) {
-    res.send(error);
+    res.status(500).send({ message: "Error fetching products", error: error });
   }
 };
 
@@ -25,6 +33,7 @@ const getOneProduct = async (req, res) => {
 const createProduct = async (req, res) => {
   try {
     let product = req.body;
+    console.log(product);
     await Product.create(product);
     let products = await Product.find();
     res.send(products);
@@ -38,9 +47,7 @@ const updateProduct = async (req, res) => {
   try {
     let id = req.params.id;
     let data = req.body;
-    console.log("testtttttttttt", id, data);
     let product = await Product.findByIdAndUpdate(id, data);
-    console.log("testtttttttttt", product);
     res.send(product);
   } catch (error) {
     res.send(error);

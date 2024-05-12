@@ -14,8 +14,19 @@ const getAllStores = async (req, res) => {
 //display one store
 const getOneStore = async (req, res) => {
   try {
-    let names = await Store.findOne({ id: req.params.id });
+    let names = await Store.findById(req.params.id);
     res.send(names);
+  } catch (error) {
+    res.send(error);
+  }
+};
+
+//display User store #####
+const getUserStore = async (req, res) => {
+  try {
+    let userID = req.params.user;
+    const stores = await Store.find({ userID });
+    res.send(stores);
   } catch (error) {
     res.send(error);
   }
@@ -57,4 +68,4 @@ const deleteStore = async (req, res) => {
   }
 };
 
-module.exports = { getAllStores, createStore, deleteStore, updateStore, getOneStore };
+module.exports = { getAllStores, createStore, deleteStore, updateStore, getOneStore, getUserStore };

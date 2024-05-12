@@ -6,6 +6,7 @@ let customerSchema = new mongoose.Schema(
     email: String,
     password: String,
     name: String,
+    storeID: { type: mongoose.Schema.ObjectId, ref: "store" },
   },
   { timestamps: true }
 );

@@ -8,7 +8,8 @@ function AddStore() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      let res = await axios.post("http://localhost:8080/store/create", { name: storeName });
+      let res = await axios.post("http://localhost:8080/store/create", { name: storeName, userID: localStorage.getItem("id") });
+      console.log("res", res);
     } catch (error) {
       console.log(error);
     }
@@ -27,13 +28,20 @@ function AddStore() {
               <label htmlFor="" className="form-label">
                 Store Name
               </label>
-              <input
-                type="text"
-                className="form-control"
-                id="storeName"
-                placeholder="Please write your store name"
-                onChange={(e) => setStoreName(e.target.value)}
-              />
+              <div class="input-group ">
+                <input
+                  type="text"
+                  class="form-control"
+                  aria-label="Recipient's username"
+                  aria-describedby="basic-addon2"
+                  id="storeName"
+                  placeholder="Please write your store name"
+                  onChange={(e) => setStoreName(e.target.value)}
+                />
+                <span class="input-group-text" id="basic-addon2">
+                  .shoploper.com
+                </span>
+              </div>
             </div>
             <button type="submit" className="btn btn-primary">
               Submit

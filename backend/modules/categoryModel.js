@@ -5,7 +5,8 @@ let categorySchema = new mongoose.Schema(
   {
     image: String,
     name: String,
-    category: { type: mongoose.Schema.ObjectId, ref: "category" },
+    categoryID: { type: mongoose.Schema.ObjectId, ref: "category" },
+    storeID: { type: mongoose.Schema.ObjectId, ref: "store" },
   },
   { timestamps: true }
 );

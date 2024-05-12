@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 let storeSchema = new mongoose.Schema(
   {
     name: String,
+    userID: { type: mongoose.Schema.ObjectId, ref: "user" },
   },
   { timestamps: true }
 );

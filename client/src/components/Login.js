@@ -1,9 +1,15 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { jwtDecode } from "jwt-decode";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+
+  let token, id, name;
+  let decoded;
 
   async function login(e) {
     e.preventDefault();
@@ -12,13 +18,19 @@ function Login() {
       password,
     };
     console.log(data);
-    let res = await axios.get(`http://localhost:8080/user/login/`, data);
-
-    console.log(res);
+    let res = await axios.post(`http://localhost:8080/user/login/`, data);
+    token = res.data.token;
+    id = res.data.id;
+    name = res.data.name;
+    localStorage.setItem("token", token);
+    localStorage.setItem("id", id);
+    localStorage.setItem("name", name);
+    decoded = jwtDecode(token);
+    navigate("/");
   }
   return (
     <>
-      <div className="container d-flex justify-content-center align-items-center min-vh-100">
+      <div className="container d-flex justify-content-center align-items-center vh-100">
         <div className="row bg-light m-3 p-2 rounded-3 p-5">
           <div className="col-md-6 p-0 d-flex justify-content-center align-items-center">
             <img className="img-fluid rounded-3 " src="./images/signin.png" alt="" />

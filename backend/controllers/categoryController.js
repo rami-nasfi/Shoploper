@@ -4,7 +4,8 @@ const Category = require("../modules/categoryModel");
 //display all
 const getAllCategories = async (req, res) => {
   try {
-    let data = await Category.find();
+    let storeID = req.params.storeID;
+    let data = await Category.find({ storeID });
     res.send(data);
   } catch (error) {
     res.send(error);
@@ -26,8 +27,8 @@ const createCategory = async (req, res) => {
   try {
     let category = req.body;
     await Category.create(category);
-    let categorys = await Category.find();
-    res.send(categorys);
+    let categories = await Category.find();
+    res.send(categories);
   } catch (error) {
     res.send(error);
   }

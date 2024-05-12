@@ -1,7 +1,9 @@
 const { model } = require("mongoose");
 const User = require("../modules/userModel");
 const bcrypt = require("bcrypt");
-const saltRounds = 10;
+const jwt = require("jsonwebtoken");
+const verifyToken = require("../middleware/auth");
+require("dotenv").config();
 
 //display all
 const getAllUsers = async (req, res) => {
@@ -69,11 +71,12 @@ const signupUser = async (req, res) => {
 
     let user = await User.findOne({ email });
     if (user) {
-      res.send({ msg: "Email already exist please login or register with a new email" });
+      return res.send({ msg: "Email already exist please login or register with a new email" });
     }
-    let hashPassword = await bcrypt.hash(password, saltRounds);
+    let hashPassword = await bcrypt.hash(password, +process.env.SALT_ROUND);
+    console.log(hashPassword);
     await User.create({ email, password: hashPassword, name });
-    res.send({ email, hashPassword, name });
+    return res.send({ email, hashPassword, name });
   } catch (error) {
     res.send(error);
   }
@@ -95,7 +98,12 @@ const loginUser = async (req, res) => {
     if (!match) {
       return res.status(401).send({ msg: "Invalid email or password" });
     }
-    res.send({ msg: "Login successful" });
+    console.log("token");
+    let token = jwt.sign({ id: user.id, name: user.name, email: user.email }, process.env.SECRET_KEY);
+    let id = user.id;
+    let name = user.name;
+    console.log(token);
+    res.send({ msg: "Login successfully", token, id, name });
   } catch (error) {
     res.send(error);
   }

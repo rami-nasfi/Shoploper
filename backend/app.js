@@ -5,10 +5,12 @@ const app = express();
 const main = require("./Connection");
 const userRouter = require("./routers/userRouter");
 const productRouter = require("./routers/productRouter");
+const categoryRouter = require("./routers/categoryRouter");
 const customerRouter = require("./routers/customerRouter");
 const orderRouter = require("./routers/orderRouter");
 const storeRouter = require("./routers/storeRouter");
 const cors = require("cors");
+const verifyToken = require("./middleware/auth");
 
 //middleware
 app.use(express.json());
@@ -19,6 +21,7 @@ app.use(cors());
 
 app.use("/user", userRouter);
 app.use("/product", productRouter);
+app.use("/category", categoryRouter);
 app.use("/order", orderRouter);
 app.use("/customer", customerRouter);
 app.use("/store", storeRouter);
