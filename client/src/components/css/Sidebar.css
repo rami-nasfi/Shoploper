@@ -1,5 +1,8 @@
 .w-20 {
-  width: 250px !important;
+  width: 17vw !important;
+}
+.w-80 {
+  width: 83vw !important;
 }
 .w-16 {
   width: 48px;
@@ -13,4 +16,26 @@
 
 .vh-75 {
   height: 75vh !important;
+}
+
+.imgDragzone {
+  width: 100px;
+  height: 100px;
+}
+.slick-slide > div {
+  margin-left: 10px;
+}
+/* Sidebar.css */
+@media (min-width: 992px) {
+  .offcanvas-lg {
+    position: static;
+    width: 20%;
+    height: auto;
+    visibility: visible !important;
+    background-color: #f8f9fa; /* Ensures the sidebar has a background on larger screens */
+    border-right: 1px solid #ddd;
+  }
+  .offcanvas-body {
+    display: block;
+  }
 }

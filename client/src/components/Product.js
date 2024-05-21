@@ -1,16 +1,21 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 import Modal from "./Modal";
 import { FaPenToSquare, FaRegTrashCan } from "react-icons/fa6";
+import { useStoreID } from "../App";
 
 function Product() {
+  const url = "http://localhost:8080/";
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
+  const [filter, setFilter] = useState("");
+  const [status, setStatus] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [perPage] = useState(10);
   const [totalPages, setTotalPages] = useState(1);
   const [deleteItemId, setDeleteItemId] = useState(null);
+  const { storeID } = useContext(useStoreID);
 
   // Modal variables
   const dataModal = {
@@ -22,10 +27,12 @@ function Product() {
 
   async function fetchProducts() {
     try {
-      const res = await axios.get(`http://localhost:8080/product/?page=${currentPage}&perPage=${perPage}`);
+      const res = await axios.get(
+        `http://localhost:8080/product/?storeID=${storeID}&page=${currentPage}&perPage=${perPage}&filter=${filter}&status=${status}`
+      );
+      console.log("#######", res.data.products);
       setProducts(res.data.products);
       setTotalPages(res.data.totalPages);
-      console.log("totalPages here:", totalPages);
       if (currentPage > totalPages) {
         setCurrentPage(totalPages);
       }
@@ -34,8 +41,10 @@ function Product() {
     }
   }
   useEffect(() => {
-    fetchProducts();
-  }, [currentPage, perPage, totalPages]);
+    if (storeID) {
+      fetchProducts();
+    }
+  }, [currentPage, perPage, totalPages, filter, status, storeID]);
 
   const handleClick = () => {
     navigate("/add-product");
@@ -48,6 +57,7 @@ function Product() {
       console.error("Error fetching products:", error);
     }
   };
+
   return (
     <div className="container ">
       <div className="d-flex justify-content-between mb-5">
@@ -60,13 +70,28 @@ function Product() {
       </div>
       <div className="border rounded p-2 ">
         <div className="d-flex justify-content-between gap-2 m-2 ">
-          <input type="text" className="form-control w-50" placeholder="Search product ...." />
+          <input
+            type="text"
+            className="form-control w-50"
+            id="filter"
+            name="filter"
+            value={filter}
+            placeholder="Search product ...."
+            onChange={(e) => setFilter(e.target.value)}
+          />
           <div className=" d-flex gap-2">
             <div>
-              <select className="form-select" aria-label="Default select example" defaultValue="0">
-                <option value="0">Status</option>
-                <option value="1">Active</option>
-                <option value="2">Inactive</option>
+              <select
+                className="form-select"
+                aria-label="Default select example"
+                name="status"
+                id="status"
+                defaultValue="0"
+                onChange={(e) => setStatus(e.target.value)}
+              >
+                <option value="">Status</option>
+                <option value="Active">Active</option>
+                <option value="Inactive">Inactive</option>
               </select>
             </div>
           </div>
@@ -81,7 +106,7 @@ function Product() {
                   </div>
                 </th>
                 <th scope="col" className="col-1">
-                  {products.image}
+                  image
                 </th>
                 <th scope="col col-3">Name</th>
                 <th scope="col col-2">Category</th>
@@ -94,7 +119,7 @@ function Product() {
             <tbody>
               {products.length === 0 ? (
                 <tr>
-                  <td colSpan="7" className="text-center">
+                  <td colSpan="6" className="text-center">
                     There are no products available.
                   </td>
                 </tr>
@@ -108,7 +133,7 @@ function Product() {
                     </td>
                     <td className="align-middle">
                       <div className="">
-                        <img src={product.image} className="rounded w-16" alt={product.name} />
+                        <img src={url + product.images["0"]} className="rounded w-16" alt={product.name} />
                       </div>
                     </td>
                     <td className="align-middle col-3">{product.name}</td>

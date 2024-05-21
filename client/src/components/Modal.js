@@ -21,7 +21,7 @@ function Modal(props) {
             <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">
               Close
             </button>
-            <button type="button" className={`btn ${colorModalBtn} `} onClick={action}>
+            <button type="button" className={`btn ${colorModalBtn} `} data-bs-dismiss="modal" onClick={action}>
               {textModalBtn}
             </button>
           </div>
