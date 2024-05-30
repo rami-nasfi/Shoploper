@@ -19,7 +19,6 @@ import InitialRoute from "./util/InitialRoute";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Store from "./components/Store";
-import Test from "./components/Test";
 import AddTeam from "./components/AddTeam";
 import AddCategory from "./components/AddCategory";
 import RoleRoutes from "./util/RoleRoutes";
@@ -64,7 +63,6 @@ function App() {
                         <Route path="/pages" element={<AddStore />} />
                         <Route path="/team" element={<AddTeam />} />
                         <Route path="/domaine" element={<AddStore />} />
-                        <Route path="/themes" element={<Test />} />
                       </Route>
                     </Route>
                     <Route element={<RoleRoutes />}>
