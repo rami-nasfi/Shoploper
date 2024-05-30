@@ -69,7 +69,6 @@ const signupUser = async (req, res) => {
     if (!email || !password || !name) {
       return res.send({ msg: "Fill the required information" });
     }
-
     let user = await User.findOne({ email });
     if (user) {
       return res.send({ msg: "Email already exist please login or register with a new email" });
