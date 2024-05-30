@@ -6,6 +6,8 @@ router.get("/", getAllStores);
 
 router.get("/:id", getOneStore);
 
+router.get("/staff/:id", getOneStore);
+
 router.get("/user/:userID", getUserStore);
 
 router.post("/create", createStore);

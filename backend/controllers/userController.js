@@ -1,15 +1,16 @@
 const { model } = require("mongoose");
-const User = require("../modules/userModel");
+const User = require("../models/userModel");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const verifyToken = require("../middleware/auth");
+const verifyToken = require("../middlewares/auth");
 require("dotenv").config();
 
 //display all
 const getAllUsers = async (req, res) => {
   try {
-    let names = await User.find();
-    res.send(names);
+    let users = await User.find({ storeID: req.params.storeID });
+    console.log("display alllll", users);
+    res.send({ users });
   } catch (error) {
     res.send(error);
   }
@@ -18,7 +19,7 @@ const getAllUsers = async (req, res) => {
 //display one user
 const getOneUser = async (req, res) => {
   try {
-    let names = await User.findOne({ email: req.params.email });
+    let names = await User.findById(req.params.email);
     res.send(names);
   } catch (error) {
     res.send(error);
@@ -64,7 +65,7 @@ const deleteUser = async (req, res) => {
 //signup user
 const signupUser = async (req, res) => {
   try {
-    let { email, password, name } = req.body;
+    let { email, password, name, role, storeID } = req.body;
     if (!email || !password || !name) {
       return res.send({ msg: "Fill the required information" });
     }
@@ -75,8 +76,8 @@ const signupUser = async (req, res) => {
     }
     let hashPassword = await bcrypt.hash(password, +process.env.SALT_ROUND);
     console.log(hashPassword);
-    await User.create({ email, password: hashPassword, name });
-    return res.send({ email, hashPassword, name });
+    await User.create({ email, password: hashPassword, name, role, storeID });
+    return res.send({ email, hashPassword, name, role, storeID });
   } catch (error) {
     res.send(error);
   }
@@ -102,8 +103,8 @@ const loginUser = async (req, res) => {
     let token = jwt.sign({ id: user.id, name: user.name, email: user.email }, process.env.SECRET_KEY);
     let id = user.id;
     let name = user.name;
-    console.log(token);
-    res.send({ msg: "Login successfully", token, id, name });
+    let role = user.role;
+    res.send({ msg: "Login successfully", token, id, name, role });
   } catch (error) {
     res.send(error);
   }

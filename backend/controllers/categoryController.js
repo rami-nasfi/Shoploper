@@ -1,17 +1,39 @@
 const { model } = require("mongoose");
-const Category = require("../modules/categoryModel");
+const Category = require("../models/categoryModel");
+
+// Display all categories
+const getAllCategories = async (req, res) => {
+  const page = parseInt(req.query.page) || 1;
+  const perPage = parseInt(req.query.perPage) || 10;
+  const filter = req.query.filter || "";
+  const status = req.query.status || "";
+  const storeID = req.query.storeID;
+
+  try {
+    const filterCondition = { name: { $regex: filter, $options: "i" } };
+    if (status !== "") filterCondition.status = status;
+    const totalCategories = await Category.find(filterCondition).countDocuments();
+    const totalPages = Math.ceil(totalCategories / perPage) || 1;
+    const skip = (page - 1) * perPage;
+    const categories = await Category.find(filterCondition).skip(skip).limit(perPage).populate({
+      path: "categoryID",
+    });
+    console.log("##########################", categories);
+    res.send({ categories, totalPages });
+  } catch (error) {
+    res.status(500).send({ message: "Error fetching categories", error });
+  }
+};
 
 //display all
-const getAllCategories = async (req, res) => {
+const getAllCat = async (req, res) => {
   try {
-    let storeID = req.params.storeID;
-    let data = await Category.find({ storeID });
-    res.send(data);
+    let categories = await Category.find({ storeID: req.params.storeID });
+    res.send({ categories });
   } catch (error) {
     res.send(error);
   }
 };
-
 //display one category
 const getOneCategory = async (req, res) => {
   try {
@@ -26,6 +48,7 @@ const getOneCategory = async (req, res) => {
 const createCategory = async (req, res) => {
   try {
     let category = req.body;
+    console.log(category);
     await Category.create(category);
     let categories = await Category.find();
     res.send(categories);
@@ -39,9 +62,7 @@ const updateCategory = async (req, res) => {
   try {
     let id = req.params.id;
     let data = req.body;
-    console.log("testtttttttttt", id, data);
     let category = await Category.findByIdAndUpdate(id, data);
-    console.log("testtttttttttt", category);
     res.send(category);
   } catch (error) {
     res.send(error);
@@ -60,4 +81,4 @@ const deleteCategory = async (req, res) => {
   }
 };
 
-module.exports = { getAllCategories, createCategory, deleteCategory, updateCategory, getOneCategory };
+module.exports = { getAllCategories, createCategory, deleteCategory, updateCategory, getOneCategory, getAllCat };

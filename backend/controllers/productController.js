@@ -1,68 +1,77 @@
-const { model } = require("mongoose");
-const Product = require("../modules/productModel");
+const Product = require("../models/productModel");
 
-//display all
+// Display all products
 const getAllProducts = async (req, res) => {
   const page = parseInt(req.query.page) || 1;
   const perPage = parseInt(req.query.perPage) || 10;
+  const filter = req.query.filter || "";
+  const status = req.query.status || "";
+  const storeID = req.query.storeID;
 
   try {
-    const totalProducts = await Product.countDocuments();
-    const totalPages = Math.ceil(totalProducts / perPage);
-
+    const filterCondition = { name: { $regex: filter, $options: "i" } };
+    if (status !== "") filterCondition.status = status;
+    const totalProducts = await Product.find(filterCondition).countDocuments();
+    const totalPages = Math.ceil(totalProducts / perPage) || 1;
     const skip = (page - 1) * perPage;
-    const products = await Product.find().skip(skip).limit(perPage).populate("categoryID");
-    console.log(totalPages);
+    const products = await Product.find(filterCondition).skip(skip).limit(perPage).populate({
+      path: "categoryID",
+    });
     res.send({ products, totalPages });
   } catch (error) {
-    res.status(500).send({ message: "Error fetching products", error: error });
+    res.status(500).send({ message: "Error fetching products", error });
   }
 };
 
-//display one product
+// Display one product
 const getOneProduct = async (req, res) => {
   try {
-    let product = await Product.findOne({ id: req.params.id });
+    const product = await Product.findById(req.params.id);
     res.send(product);
   } catch (error) {
-    res.send(error);
+    res.status(500).send({ message: "Error fetching product", error });
   }
 };
 
-//Create new Product
+// Create new product with image upload
 const createProduct = async (req, res) => {
   try {
-    let product = req.body;
-    console.log(product);
-    await Product.create(product);
-    let products = await Product.find();
-    res.send(products);
+    const { name, status, categoryID, price } = req.body;
+    const images = req.files.map((file) => file.path); // Array of file paths
+    const newProduct = new Product({ name, status, categoryID, price, images });
+    await newProduct.save();
+    res.status(201).send({ message: "Product created successfully", product: newProduct });
   } catch (error) {
-    res.send(error);
+    res.status(500).send({ message: "Error creating product", error });
   }
 };
 
-//Update product
+// Update product
 const updateProduct = async (req, res) => {
   try {
-    let id = req.params.id;
-    let data = req.body;
-    let product = await Product.findByIdAndUpdate(id, data);
+    const id = req.params.id;
+    const existingImages = req.body.images || [];
+    console.log("existingImages", existingImages);
+    const { name, status, categoryID, price } = req.body;
+    const newImages = req.files.map((file) => file.path);
+    const images = [...existingImages, ...newImages];
+
+    const product = await Product.findByIdAndUpdate(id, { name, status, categoryID, price, images }, { new: true });
     res.send(product);
   } catch (error) {
-    res.send(error);
+    res.status(500).send({ message: "Error updating product", error });
   }
 };
 
-//Delete product
+// Delete product
 const deleteProduct = async (req, res) => {
   try {
-    let id = req.params.id;
+    const id = req.params.id;
     await Product.findByIdAndDelete(id);
-    let names = await Product.find();
-    res.send(names);
+    const products = await Product.find();
+    res.send(products);
   } catch (error) {
-    res.send(error);
+    res.status(500).send({ message: "Error deleting product", error });
   }
 };
 

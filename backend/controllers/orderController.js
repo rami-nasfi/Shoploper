@@ -1,5 +1,5 @@
 const { model } = require("mongoose");
-const Order = require("../modules/orderModel");
+const Order = require("../models/orderModel");
 
 //display all
 const getAllOrders = async (req, res) => {

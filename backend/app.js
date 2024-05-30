@@ -1,7 +1,10 @@
 const express = require("express");
-const mongoose = require("mongoose");
-const PORT = 8080; // Choose your desired port
+const cors = require("cors");
+const path = require("path");
+
+const PORT = 8080;
 const app = express();
+
 const main = require("./Connection");
 const userRouter = require("./routers/userRouter");
 const productRouter = require("./routers/productRouter");
@@ -9,19 +12,19 @@ const categoryRouter = require("./routers/categoryRouter");
 const customerRouter = require("./routers/customerRouter");
 const orderRouter = require("./routers/orderRouter");
 const storeRouter = require("./routers/storeRouter");
-const cors = require("cors");
-const verifyToken = require("./middleware/auth");
+const verifyToken = require("./middlewares/auth");
 
-//middleware
+// Middleware
 app.use(express.json());
 app.use(cors());
 
-// Define routes
-// Add your routes here
+// Serve static files
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
+// Define routes
 app.use("/user", userRouter);
-app.use("/product", productRouter);
-app.use("/category", categoryRouter);
+app.use("/product", verifyToken, productRouter);
+app.use("/category", verifyToken, categoryRouter);
 app.use("/order", orderRouter);
 app.use("/customer", customerRouter);
 app.use("/store", storeRouter);

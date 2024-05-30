@@ -1,5 +1,5 @@
 const { model } = require("mongoose");
-const Store = require("../modules/storeModel");
+const Store = require("../models/storeModel");
 
 //display all
 const getAllStores = async (req, res) => {
@@ -14,7 +14,8 @@ const getAllStores = async (req, res) => {
 //display one store
 const getOneStore = async (req, res) => {
   try {
-    let names = await Store.findById(req.params.id);
+    let id = req.params.id;
+    let names = await Store.findById(id);
     res.send(names);
   } catch (error) {
     res.send(error);
@@ -24,7 +25,7 @@ const getOneStore = async (req, res) => {
 //display User store #####
 const getUserStore = async (req, res) => {
   try {
-    let userID = req.params.user;
+    let userID = req.params.userID;
     const stores = await Store.find({ userID });
     res.send(stores);
   } catch (error) {
@@ -35,12 +36,20 @@ const getUserStore = async (req, res) => {
 //Create new Store
 const createStore = async (req, res) => {
   try {
-    let stores = req.body;
-    await Store.create(stores);
-    let names = await Store.find();
-    res.send(names);
+    let { name, userID } = req.body;
+    if (!name) {
+      return res.status(500).send({ msg: "Fill the required information" });
+    }
+    const isReserved = await Store.find({ name });
+    console.log(isReserved.length);
+    if (isReserved.length > 0) {
+      return res.status(500).send({ msg: "Name not available" });
+    }
+    await Store.create({ name, userID });
+    let names = await Store.find({ userID });
+    res.status(200).send(names);
   } catch (error) {
-    res.send(error);
+    res.status(500).send(error);
   }
 };
 

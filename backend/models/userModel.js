@@ -6,7 +6,8 @@ let userSchema = new mongoose.Schema(
     email: String,
     password: String,
     name: String,
-    role: String,
+    role: String || "admin",
+    storeID: { type: mongoose.Schema.ObjectId, ref: "store" },
   },
   { timestamps: true }
 );
