@@ -2,7 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const path = require("path");
 
-const PORT = 8080;
+const PORT = process.env.PORT || 8080;
 const app = express();
 
 const main = require("./Connection");
