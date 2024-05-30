@@ -4,7 +4,7 @@ import CarouselImage from "./themes/CarouselImage";
 import CategoryListCard from "./themes/CategoryListCard";
 import ProductListCard from "./themes/ProductListCard";
 
-const Test = () => {
+function Test() {
   return (
     <div className="container d-flex flex-column gap-5 w-80">
       <MainNavigation />
@@ -13,6 +13,6 @@ const Test = () => {
       <ProductListCard />
     </div>
   );
-};
+}
 
 export default Test;
