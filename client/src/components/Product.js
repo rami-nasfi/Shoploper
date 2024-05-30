@@ -18,7 +18,7 @@ function Product() {
   const [deleteItemId, setDeleteItemId] = useState(null);
   const { storeID } = useContext(useStoreID);
   const auth = useAuth();
-  const url = baseURL;
+
   // Modal variables
   const dataModal = {
     msgModal: "Are you sure you want to delete this item?",
@@ -29,11 +29,15 @@ function Product() {
 
   async function fetchProducts() {
     try {
-      const res = await axios.get(`${url}/product/?storeID=${storeID}&page=${currentPage}&perPage=${perPage}&filter=${filter}&status=${status}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
+      const res = await axios.get(
+        `${baseURL}
+/product/?storeID=${storeID}&page=${currentPage}&perPage=${perPage}&filter=${filter}&status=${status}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
       console.log("#######", res.data.products);
       setProducts(res.data.products);
       setTotalPages(res.data.totalPages);
@@ -58,11 +62,15 @@ function Product() {
   };
   const handleDelete = async (id) => {
     try {
-      const res = await axios.delete(`${url}/product/${id}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
+      const res = await axios.delete(
+        `${baseURL}
+/product/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
       fetchProducts();
     } catch (error) {
       console.error("Error fetching products:", error);

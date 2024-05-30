@@ -8,7 +8,6 @@ import { useStoreID } from "../App";
 import { useAuth } from "../util/RoleContext";
 
 function Category() {
-  const url = baseURL;
   const navigate = useNavigate();
   const [categories, setCategories] = useState([]);
   const [filter, setFilter] = useState("");

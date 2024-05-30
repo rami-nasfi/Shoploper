@@ -14,7 +14,7 @@ function Sidebar({ setIsAuthenticated }) {
   const { storeID, setStoreID } = useContext(useStoreID);
   const auth = useAuth();
   const navigate = useNavigate();
-  const url = baseURL;
+
   const handleSetActiveLink = (link) => {
     setActiveLink(link);
     closeOffcanvas();
@@ -31,15 +31,18 @@ function Sidebar({ setIsAuthenticated }) {
 
     try {
       // Get user details to check the role
-      let userRes = await axios.get(`${url}/user/${userID}`);
+      let userRes = await axios.get(`${baseURL}
+/user/${userID}`);
       const userRole = userRes.data.role; // Assuming the user data has a role field
       let storeRes;
       if (userRole !== "staff") {
-        storeRes = await axios.get(`${url}/store/user/${userID}`);
+        storeRes = await axios.get(`${baseURL}
+/store/user/${userID}`);
         setStores(storeRes.data);
       } else {
         let storeID = userRes.data.storeID;
-        storeRes = await axios.get(`${url}/store/staff/${storeID}`);
+        storeRes = await axios.get(`${baseURL}
+/store/staff/${storeID}`);
         setStores([storeRes.data]);
       }
 

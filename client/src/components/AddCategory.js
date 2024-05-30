@@ -8,7 +8,7 @@ function AddCategory() {
   const [categoryCategory, setCategoryCategory] = useState("");
   const [categoryPrice, setCategoryPrice] = useState("");
   let storeID;
-  const url = baseURL;
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -18,7 +18,11 @@ function AddCategory() {
         category: categoryCategory,
       };
 
-      await axios.post(`${url}/category/create`, data);
+      await axios.post(
+        `${baseURL}
+/category/create`,
+        data
+      );
     } catch (error) {
       console.error("Error adding category:", error);
     }
@@ -26,7 +30,10 @@ function AddCategory() {
   const handleCategory = async () => {
     try {
       storeID = "663f96cab533dfb5acc21748";
-      setCategoryCategory(await axios.get(`${url}/category/select/${storeID}`));
+      setCategoryCategory(
+        await axios.get(`${baseURL}
+/category/select/${storeID}`)
+      );
     } catch (error) {
       console.error("Error adding category:", error);
     }

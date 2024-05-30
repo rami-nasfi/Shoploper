@@ -10,7 +10,6 @@ function Modal({ itemEdit, handleAddItem, setX }) {
   const [products, setProducts] = useState([]);
   const [pages, setPages] = useState([]);
   const { storeID } = useContext(useStoreID);
-  const url = baseURL;
   useEffect(() => {
     setText(itemEdit.text || "");
     setLink(itemEdit.link || "");
@@ -23,7 +22,7 @@ function Modal({ itemEdit, handleAddItem, setX }) {
 
   const fetchCategories = async () => {
     try {
-      const res = await axios.get(`${url}/category/select/${storeID}`, {
+      const res = await axios.get(`${baseURL}/category/select/${storeID}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -40,7 +39,7 @@ function Modal({ itemEdit, handleAddItem, setX }) {
 
   const fetchProducts = async () => {
     try {
-      const res = await axios.get(`${url}/products`);
+      const res = await axios.get(`${baseURL}/products`);
       if (res.data && Array.isArray(res.data)) {
         setProducts(res.data);
       } else {
@@ -53,7 +52,7 @@ function Modal({ itemEdit, handleAddItem, setX }) {
 
   const fetchPages = async () => {
     try {
-      const res = await axios.get(`${url}/pages`);
+      const res = await axios.get(`${baseURL}/pages`);
       if (res.data && Array.isArray(res.data)) {
         setPages(res.data);
       } else {
