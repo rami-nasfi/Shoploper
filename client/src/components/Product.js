@@ -156,7 +156,7 @@ function Product() {
                     </td>
                     <td className="align-middle">
                       <div className="">
-                        <img src={url + product.images["0"]} className="rounded w-16" alt={product.name} />
+                        <img src={baseURL + product.images["0"]} className="rounded w-16" alt={product.name} />
                       </div>
                     </td>
                     <td className="align-middle col-3">{product.name}</td>
