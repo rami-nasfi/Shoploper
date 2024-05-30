@@ -3,6 +3,7 @@ import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../util/RoleContext";
+import baseURL from "../config";
 
 function Login({ setIsAuthenticated }) {
   const [email, setEmail] = useState("");
@@ -40,20 +41,20 @@ function Login({ setIsAuthenticated }) {
 
     const data = { email, password };
     try {
-      const res = await axios.post(`https://shoploper.onrender.com/user/login/`, data);
+      const res = await axios.post(`${baseURL}/user/login/`, data);
       token = res.data.token;
       id = res.data.id;
       name = res.data.name;
       role = res.data.role;
       let storeID;
       if (role !== "staff") {
-        const resStoreID = await axios.get(`https://shoploper.onrender.com/store/user/${id}`);
+        const resStoreID = await axios.get(`${baseURL}/store/user/${id}`);
         if (resStoreID.data.length !== 0) {
           storeID = resStoreID.data[0]._id;
           console.log(storeID);
         }
       } else {
-        const resStoreID = await axios.get(`https://shoploper.onrender.com/store/${id}`);
+        const resStoreID = await axios.get(`${baseURL}/store/${id}`);
         storeID = resStoreID._id;
       }
       localStorage.setItem("storeID", storeID);

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import baseURL from "../config";
 import { useNavigate } from "react-router-dom";
 
 function Signup() {
@@ -40,7 +41,7 @@ function Signup() {
     }
     setErrors({});
     console.log(data);
-    let res = await axios.post(`http://localhost:8080/user/signup`, data);
+    let res = await axios.post(`${baseURL}/user/signup`, data);
     navigate("/login");
     console.log(res);
   }

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import baseURL from "../config";
 import { useNavigate } from "react-router-dom";
 
 function AddStore() {
@@ -26,7 +27,7 @@ function AddStore() {
     setErrors({});
 
     try {
-      let check = await axios.get(`http://localhost:8080/store/name/${storeName}`);
+      let check = await axios.get(`${baseURL}/store/name/${storeName}`);
       if (check.data.length > 0) {
         errors.storeName = "Store name not available";
         setErrors(errors);

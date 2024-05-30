@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
+import baseURL from "../config";
 import { FaRegTrashCan } from "react-icons/fa6";
 import { useStoreID } from "../App";
 import Modal from "./Modal";
@@ -16,7 +17,7 @@ function Team({ fetchTeams, teams }) {
   };
   const handleDelete = async (id) => {
     try {
-      const res = await axios.delete(`http://localhost:8080/user/${id}`);
+      const res = await axios.delete(`${baseURL}/user/${id}`);
       fetchTeams();
     } catch (error) {
       console.error("Error fetching products:", error);

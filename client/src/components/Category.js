@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
+import baseURL from "../config";
 import Modal from "./Modal";
 import { FaPenToSquare, FaRegTrashCan } from "react-icons/fa6";
 import { useStoreID } from "../App";
@@ -30,7 +31,7 @@ function Category() {
   async function fetchCategories() {
     try {
       const res = await axios.get(
-        `http://localhost:8080/category/?storeID=${storeID}&page=${currentPage}&perPage=${perPage}&filter=${filter}&status=${status}`,
+        `${baseURL}/category/?storeID=${storeID}&page=${currentPage}&perPage=${perPage}&filter=${filter}&status=${status}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -58,7 +59,7 @@ function Category() {
   };
   const handleDelete = async (id) => {
     try {
-      const res = await axios.delete(`http://localhost:8080/category/${id}`, {
+      const res = await axios.delete(`${baseURL}/category/${id}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },

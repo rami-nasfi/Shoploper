@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
+import baseURL from "../config";
 import { toast } from "react-toastify";
 import Dropzone from "./Dropzone";
 import { useStoreID } from "../App";
@@ -21,7 +22,7 @@ function AddEditProduct() {
     const fetchProduct = async () => {
       if (id) {
         try {
-          const res = await axios.get(`http://localhost:8080/product/${id}`, {
+          const res = await axios.get(`${baseURL}/product/${id}`, {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
@@ -56,7 +57,7 @@ function AddEditProduct() {
       });
 
       if (id) {
-        await axios.put(`http://localhost:8080/product/${id}`, formData, {
+        await axios.put(`${baseURL}/product/${id}`, formData, {
           headers: {
             "Content-Type": "multipart/form-data",
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -86,7 +87,7 @@ function AddEditProduct() {
   useEffect(() => {
     const handleCategory = async () => {
       try {
-        let res = await axios.get(`http://localhost:8080/category/select/${storeID}`, {
+        let res = await axios.get(`${baseURL}/category/select/${storeID}`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },

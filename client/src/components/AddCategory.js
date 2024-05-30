@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import baseURL from "../config";
 
 function AddCategory() {
   const [categoryName, setCategoryName] = useState("");
@@ -24,7 +25,7 @@ function AddCategory() {
   const handleCategory = async () => {
     try {
       storeID = "663f96cab533dfb5acc21748";
-      setCategoryCategory(await axios.get(`http://localhost:8080/category/select/${storeID}`));
+      setCategoryCategory(await axios.get(`${baseURL}/category/select/${storeID}`));
     } catch (error) {
       console.error("Error adding category:", error);
     }

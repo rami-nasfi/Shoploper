@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
+import baseURL from "../config";
 import Modal from "./Modal";
 import { FaPenToSquare, FaRegTrashCan } from "react-icons/fa6";
 import { useStoreID } from "../App";
@@ -29,14 +30,11 @@ function Product() {
 
   async function fetchProducts() {
     try {
-      const res = await axios.get(
-        `http://localhost:8080/product/?storeID=${storeID}&page=${currentPage}&perPage=${perPage}&filter=${filter}&status=${status}`,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
+      const res = await axios.get(`${baseURL}/product/?storeID=${storeID}&page=${currentPage}&perPage=${perPage}&filter=${filter}&status=${status}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
       console.log("#######", res.data.products);
       setProducts(res.data.products);
       setTotalPages(res.data.totalPages);
@@ -61,7 +59,7 @@ function Product() {
   };
   const handleDelete = async (id) => {
     try {
-      const res = await axios.delete(`http://localhost:8080/product/${id}`, {
+      const res = await axios.delete(`${baseURL}/product/${id}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },

@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
+import baseURL from "../config";
 import { useStoreID } from "../../App";
 
 function Modal({ itemEdit, handleAddItem, setX }) {
@@ -22,7 +23,7 @@ function Modal({ itemEdit, handleAddItem, setX }) {
 
   const fetchCategories = async () => {
     try {
-      const res = await axios.get(`http://localhost:8080/category/select/${storeID}`, {
+      const res = await axios.get(`${baseURL}/category/select/${storeID}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
