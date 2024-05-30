@@ -1,3 +1,7 @@
 $primary: #0aad0a;
+$link-color: #21313c;
+$link-hover-color: $primary;
+$nav-pills-link-active-bg: transparent;
+$nav-pills-link-active-color: $primary;
 // Import Bootstrap SCSS
 @import "../node_modules/bootstrap/scss/bootstrap";

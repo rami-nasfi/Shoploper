@@ -1,15 +1,18 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./css/Sidebar.css";
 import axios from "axios";
 import { FaUser, FaUserGroup, FaFileInvoiceDollar, FaFolderOpen, FaTag, FaChartPie, FaShop, FaBars } from "react-icons/fa6";
 import { useStoreID } from "../App";
 import bootstrapBundleMin from "bootstrap/dist/js/bootstrap.bundle.min";
+import { useAuth } from "../util/RoleContext";
 
-function Sidebar() {
+function Sidebar({ setIsAuthenticated }) {
   const [activeLink, setActiveLink] = useState("Home");
   const [stores, setStores] = useState([]);
   const { storeID, setStoreID } = useContext(useStoreID);
+  const auth = useAuth();
+  const navigate = useNavigate();
 
   const handleSetActiveLink = (link) => {
     setActiveLink(link);
@@ -35,7 +38,7 @@ function Sidebar() {
         setStores(storeRes.data);
       } else {
         let storeID = userRes.data.storeID;
-        storeRes = await axios.get(`http://localhost:8080/store/${storeID}`);
+        storeRes = await axios.get(`http://localhost:8080/store/staff/${storeID}`);
         setStores([storeRes.data]);
       }
 
@@ -51,6 +54,8 @@ function Sidebar() {
   }
 
   useEffect(() => {
+    auth.setRole(localStorage.getItem("role"));
+
     userStore();
   }, []);
 
@@ -58,7 +63,12 @@ function Sidebar() {
     setStoreID(e.target.value);
     localStorage.setItem("storeID", e.target.value);
   };
-
+  const handleLogout = () => {
+    localStorage.clear();
+    auth.setRole(null);
+    setIsAuthenticated(false);
+    navigate("/login");
+  };
   useEffect(() => {
     if (storeID) {
       console.log("Store ID has been set:", storeID);
@@ -94,6 +104,11 @@ function Sidebar() {
         </div>
         <div className="offcanvas-body p-3 flex-grow-1">
           <ul className="nav nav-pills flex-column w-100">
+            <li className="nav-item mb-3">
+              <div>
+                <img src="./logo.png" alt="" style={{ width: "100%" }} />
+              </div>
+            </li>
             <li className="nav-item mb-3">
               <select className="form-select" aria-label="Store select" onChange={handleChange} value={storeID}>
                 {stores.map((store) => (
@@ -153,54 +168,82 @@ function Sidebar() {
                 Customer
               </Link>
             </li>
-            <li className="nav-item">
-              <Link
-                className={`nav-link d-flex align-items-center dropdown-toggle `}
-                data-bs-toggle="collapse"
-                data-bs-target="#onlineShopMenu"
-                aria-expanded="false"
-                aria-controls="onlineShopMenu"
-              >
-                <FaShop className="me-2" />
-                Online Shop
-              </Link>
-            </li>
-            <div className="collapse" id="onlineShopMenu">
-              <li className="nav-item">
-                <Link to="/themes" className={`nav-link ${activeLink === "Themes" ? "active" : ""}`} onClick={() => handleSetActiveLink("Themes")}>
-                  Themes
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link to="/pages" className={`nav-link ${activeLink === "Pages" ? "active" : ""}`} onClick={() => handleSetActiveLink("Pages")}>
-                  Pages
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link
-                  to="/navigation"
-                  className={`nav-link ${activeLink === "Navigation" ? "active" : ""}`}
-                  onClick={() => handleSetActiveLink("Navigation")}
-                >
-                  Navigation
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link to="/domaine" className={`nav-link ${activeLink === "Domaine" ? "active" : ""}`} onClick={() => handleSetActiveLink("Domaine")}>
-                  Domaine
-                </Link>
-              </li>
-            </div>
+
+            {auth.role === "admin" && (
+              <>
+                <li className="nav-item">
+                  <Link
+                    className={`nav-link d-flex align-items-center dropdown-toggle `}
+                    data-bs-toggle="collapse"
+                    data-bs-target="#onlineShopMenu"
+                    aria-expanded="false"
+                    aria-controls="onlineShopMenu"
+                  >
+                    <FaShop className="me-2" />
+                    Online Shop
+                  </Link>
+                </li>
+                <div className="collapse" id="onlineShopMenu">
+                  <li className="nav-item">
+                    <Link
+                      to="/themes"
+                      className={`nav-link ${activeLink === "Themes" ? "active" : ""}`}
+                      onClick={() => handleSetActiveLink("Themes")}
+                    >
+                      Themes
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link to="/pages" className={`nav-link ${activeLink === "Pages" ? "active" : ""}`} onClick={() => handleSetActiveLink("Pages")}>
+                      Pages
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link
+                      to="/navigation"
+                      className={`nav-link ${activeLink === "Navigation" ? "active" : ""}`}
+                      onClick={() => handleSetActiveLink("Navigation")}
+                    >
+                      Navigation
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link
+                      to="/domaine"
+                      className={`nav-link ${activeLink === "Domaine" ? "active" : ""}`}
+                      onClick={() => handleSetActiveLink("Domaine")}
+                    >
+                      Domaine
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link to="/team" className={`nav-link ${activeLink === "Team" ? "active" : ""}`} onClick={() => handleSetActiveLink("Team")}>
+                      Team
+                    </Link>
+                  </li>
+                </div>
+              </>
+            )}
             <li className="nav-item mt-3">
               <Link
-                to="/profile"
-                className={`nav-link d-flex align-items-center ${activeLink === "Profile" ? "active" : ""}`}
+                className={`nav-link d-flex align-items-center dropdown-toggle ${activeLink === "Profile" ? "active" : ""}`}
                 onClick={() => handleSetActiveLink("Profile")}
+                data-bs-toggle="collapse"
+                data-bs-target="#profileMenu"
+                aria-expanded="false"
+                aria-controls="profileMenu"
               >
                 <FaUser className="me-2" />
                 {localStorage.getItem("name")}
               </Link>
             </li>
+            <div className="collapse" id="profileMenu">
+              <li className="nav-item">
+                <Link className="nav-link" onClick={() => handleLogout()}>
+                  Logout
+                </Link>
+              </li>
+            </div>
           </ul>
         </div>
       </div>

@@ -70,7 +70,7 @@ function MainNavigation() {
             ))}
             {edit && (
               <li className="nav-item">
-                <a className="nav-link" data-bs-toggle="modal" data-bs-target="#exampleModal" onClick={() => setX({})}>
+                <a className="nav-link btn" data-bs-toggle="modal" data-bs-target="#exampleModal" onClick={() => setX({})}>
                   + Add item
                 </a>
               </li>

@@ -6,7 +6,7 @@ function ProductCard() {
         <div className="card-body position-relative">
           <div className=" position-relative">
             <span class="position-absolute top-0 start-0  badge rounded bg-danger">Sale</span>
-            <img src="https://freshcart.codescandy.com/assets/images/products/product-img-3.jpg" className="card-img-top" alt="..." />
+            <img src="https://i.ebayimg.com/images/g/WN8AAOSw-jhT~chA/s-l1200.webp" className="card-img-top" alt="..." />
           </div>
           <h5 className="card-title">Category</h5>
           <p className="card-text">Name</p>

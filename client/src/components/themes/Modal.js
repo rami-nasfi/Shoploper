@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
+import { useStoreID } from "../../App";
 
 function Modal({ itemEdit, handleAddItem, setX }) {
   const [text, setText] = useState("");
@@ -7,6 +8,7 @@ function Modal({ itemEdit, handleAddItem, setX }) {
   const [categories, setCategories] = useState([]);
   const [products, setProducts] = useState([]);
   const [pages, setPages] = useState([]);
+  const { storeID } = useContext(useStoreID);
 
   useEffect(() => {
     setText(itemEdit.text || "");
@@ -20,9 +22,13 @@ function Modal({ itemEdit, handleAddItem, setX }) {
 
   const fetchCategories = async () => {
     try {
-      const res = await axios.get("http://localhost:8080/category/6642101140e95cb20fd92176");
-      if (res.data && Array.isArray(res.data)) {
-        setCategories(res.data);
+      const res = await axios.get(`http://localhost:8080/category/select/${storeID}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      if (res.data.categories && Array.isArray(res.data.categories)) {
+        setCategories(res.data.categories);
       } else {
         setCategories([]);
       }

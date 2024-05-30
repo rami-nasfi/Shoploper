@@ -7,24 +7,13 @@ function CarouselImage() {
         <div className="carousel-inner rounded">
           <div className="carousel-item active ">
             <img
-              src="https://img.freepik.com/photos-premium/goutte-eau-se-repose-herbe-au-soleil_786688-1476.jpg"
+              src="https://www.socialistsanddemocrats.eu/sites/default/files/styles/header_background/public/2019-04/Palestine%402x.jpg?itok=wc3eu5BG"
               className="d-block w-100"
               alt="..."
             />
           </div>
           <div className="carousel-item">
-            <img
-              src="https://img.freepik.com/photos-gratuite/feuilles-automne-fraiches-revelent-motif-organique-vibrant-genere-par-ia_188544-15037.jpg"
-              className="d-block w-100"
-              alt="..."
-            />
-          </div>
-          <div className="carousel-item">
-            <img
-              src="https://img.freepik.com/free-photo/fresh-yellow-daisy-single-flower-close-up-beauty-generated-by-ai_188544-15543.jpg"
-              className="d-block w-100"
-              alt="..."
-            />
+            <img src="https://pbs.twimg.com/media/F_K8qaGWAAA1Dnu.png" className="d-block w-100" alt="..." />
           </div>
         </div>
         <button className="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">

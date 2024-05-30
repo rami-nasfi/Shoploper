@@ -29,7 +29,7 @@ function Team({ fetchTeams, teams }) {
     }
   }, [storeID]);
   return (
-    <div className="container ">
+    <div className=" ">
       <div className="border rounded p-2 ">
         <div className="container d-flex justify-content-center align-items-center  ">
           <table className="table table-striped ">

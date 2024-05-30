@@ -1,15 +1,17 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../util/RoleContext";
 
-function Login() {
+function Login({ setIsAuthenticated }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
+  const auth = useAuth();
 
-  let token, id, name;
+  let token, id, name, role;
   let decoded;
 
   const validate = () => {
@@ -38,29 +40,45 @@ function Login() {
 
     const data = { email, password };
     try {
-      const res = await axios.post(`http://localhost:8080/user/login/`, data);
+      const res = await axios.post(`https://shoploper.onrender.com/user/login/`, data);
       token = res.data.token;
       id = res.data.id;
       name = res.data.name;
-      const resStoreID = await axios.get(`http://localhost:8080/store/user/${id}`);
-      if (resStoreID.data.length !== 0) {
-        let storeID = resStoreID.data[0]._id;
-        console.log(storeID);
-        localStorage.setItem("storeID", storeID);
+      role = res.data.role;
+      let storeID;
+      if (role !== "staff") {
+        const resStoreID = await axios.get(`https://shoploper.onrender.com/store/user/${id}`);
+        if (resStoreID.data.length !== 0) {
+          storeID = resStoreID.data[0]._id;
+          console.log(storeID);
+        }
+      } else {
+        const resStoreID = await axios.get(`https://shoploper.onrender.com/store/${id}`);
+        storeID = resStoreID._id;
       }
+      localStorage.setItem("storeID", storeID);
       localStorage.setItem("token", token);
       localStorage.setItem("id", id);
       localStorage.setItem("name", name);
+      localStorage.setItem("role", role);
+      auth.setRole(role);
+      console.log("login", auth);
       decoded = jwtDecode(token);
+      setIsAuthenticated(true);
       navigate("/");
     } catch (error) {
       console.error("Error logging in:", error);
       setErrors({ login: "Invalid email or password" });
     }
   }
+
   const handleSignup = () => {
     navigate("/signup");
   };
+  useEffect(() => {
+    localStorage.getItem("token") && navigate("/");
+  }, []);
+
   return (
     <div className="container d-flex justify-content-center align-items-center vh-100">
       <div className="row bg-light m-3 p-2 rounded-3 p-5">

@@ -100,20 +100,29 @@ const AddTeam = () => {
     }
   }, [storeID]);
   return (
-    <>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Name:</label>
-          <input type="text" name="name" value={formData.name} onChange={handleChange} />
+    <div className="container ">
+      <div className=" container d-flex flex-column w-100 border rounded p-4">
+        <h3>Team</h3>
+        <div className="mb-3">
+          <form onSubmit={handleSubmit}>
+            <div className="row mb-2">
+              <div className="col-6">
+                <label>Name:</label>
+                <input className="form-control" type="text" name="name" value={formData.name} onChange={handleChange} />
+              </div>
+              <div className="col-6">
+                <label>Email:</label>
+                <input className="form-control" type="email" name="email" value={formData.email} onChange={handleChange} />
+              </div>
+            </div>
+            <button className="btn btn-primary" type="submit">
+              Add
+            </button>
+          </form>
         </div>
-        <div>
-          <label>Email:</label>
-          <input type="email" name="email" value={formData.email} onChange={handleChange} />
-        </div>
-        <button type="submit">Send</button>
-      </form>
-      <Team fetchTeams={fetchTeams} teams={teams} />
-    </>
+        <Team fetchTeams={fetchTeams} teams={teams} />
+      </div>
+    </div>
   );
 };
 

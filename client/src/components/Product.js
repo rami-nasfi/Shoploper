@@ -4,6 +4,7 @@ import axios from "axios";
 import Modal from "./Modal";
 import { FaPenToSquare, FaRegTrashCan } from "react-icons/fa6";
 import { useStoreID } from "../App";
+import { useAuth } from "../util/RoleContext";
 
 function Product() {
   const url = "http://localhost:8080/";
@@ -16,6 +17,7 @@ function Product() {
   const [totalPages, setTotalPages] = useState(1);
   const [deleteItemId, setDeleteItemId] = useState(null);
   const { storeID } = useContext(useStoreID);
+  const auth = useAuth();
 
   // Modal variables
   const dataModal = {
@@ -28,7 +30,12 @@ function Product() {
   async function fetchProducts() {
     try {
       const res = await axios.get(
-        `http://localhost:8080/product/?storeID=${storeID}&page=${currentPage}&perPage=${perPage}&filter=${filter}&status=${status}`
+        `http://localhost:8080/product/?storeID=${storeID}&page=${currentPage}&perPage=${perPage}&filter=${filter}&status=${status}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
       );
       console.log("#######", res.data.products);
       setProducts(res.data.products);
@@ -46,12 +53,19 @@ function Product() {
     }
   }, [currentPage, perPage, totalPages, filter, status, storeID]);
 
-  const handleClick = () => {
+  const handleAddClick = () => {
     navigate("/add-product");
+  };
+  const handleEditClick = (id) => {
+    navigate(`/edit-product/${id}`);
   };
   const handleDelete = async (id) => {
     try {
-      const res = await axios.delete(`http://localhost:8080/product/${id}`);
+      const res = await axios.delete(`http://localhost:8080/product/${id}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
       fetchProducts();
     } catch (error) {
       console.error("Error fetching products:", error);
@@ -62,11 +76,15 @@ function Product() {
     <div className="container ">
       <div className="d-flex justify-content-between mb-5">
         <h2>Products</h2>
-        <div className=" text-end">
-          <button type="submit" className="btn btn-primary " onClick={handleClick}>
-            Add product
-          </button>
-        </div>
+        {auth.role === "admin" && (
+          <>
+            <div className=" text-end">
+              <button type="submit" className="btn btn-primary " onClick={handleAddClick}>
+                Add product
+              </button>
+            </div>
+          </>
+        )}
       </div>
       <div className="border rounded p-2 ">
         <div className="d-flex justify-content-between gap-2 m-2 ">
@@ -140,22 +158,25 @@ function Product() {
                     <td className="align-middle">{product.categoryID.name}</td>
                     <td className="align-middle">{product.price}</td>
                     <td className="align-middle">{product.status}</td>
-                    <td className="align-middle text-center">
-                      <div className="d-flex justify-content-evenly">
-                        <a href="" className="d-flex align-items-center">
-                          <FaPenToSquare className="  " />
-                        </a>
-                        <a
-                          href=""
-                          className="d-flex align-items-center"
-                          data-bs-toggle="modal"
-                          data-bs-target="#exampleModal"
-                          onClick={() => setDeleteItemId(product._id)}
-                        >
-                          <FaRegTrashCan className="" />
-                        </a>
-                      </div>
-                    </td>
+                    {auth.role === "admin" && (
+                      <>
+                        <td className="align-middle text-center">
+                          <div className="d-flex justify-content-evenly">
+                            <a className="d-flex align-items-center" onClick={() => handleEditClick(product._id)}>
+                              <FaPenToSquare className="  " />
+                            </a>
+                            <a
+                              className="d-flex align-items-center "
+                              data-bs-toggle="modal"
+                              data-bs-target="#exampleModal"
+                              onClick={() => setDeleteItemId(product._id)}
+                            >
+                              <FaRegTrashCan className="" />
+                            </a>
+                          </div>
+                        </td>
+                      </>
+                    )}
                   </tr>
                 ))
               )}

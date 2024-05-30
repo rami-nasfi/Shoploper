@@ -1,12 +1,13 @@
 import React, { useState, useEffect, useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
 import Dropzone from "./Dropzone";
 import { useStoreID } from "../App";
 
-function AddProduct() {
+function AddEditProduct() {
   const navigate = useNavigate();
+  const { id } = useParams(); // Use this to get the product id from the URL
   const [productName, setProductName] = useState("");
   const [productStatus, setProductStatus] = useState("");
   const [productCategory, setProductCategory] = useState("");
@@ -16,6 +17,30 @@ function AddProduct() {
   const { storeID } = useContext(useStoreID);
   console.log("storeID", storeID);
 
+  useEffect(() => {
+    const fetchProduct = async () => {
+      if (id) {
+        try {
+          const res = await axios.get(`http://localhost:8080/product/${id}`, {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          });
+          const product = res.data;
+          setProductName(product.name);
+          setProductStatus(product.status);
+          setProductCategory(product.categoryID);
+          setProductPrice(product.price);
+          setProductImages(product.images || []);
+        } catch (error) {
+          console.error("Error fetching product:", error);
+        }
+      }
+    };
+
+    fetchProduct();
+  }, [id]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -24,30 +49,49 @@ function AddProduct() {
       formData.append("status", productStatus);
       formData.append("categoryID", productCategory);
       formData.append("price", productPrice);
+      console.log("productImages", productImages);
+
       productImages.forEach((image) => {
         formData.append("images", image);
       });
 
-      const res = await axios.post("http://localhost:8080/product/create", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
-
-      if (res) {
-        handleClick();
+      if (id) {
+        await axios.put(`http://localhost:8080/product/${id}`, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
+        toast.success("Product updated successfully!", {
+          autoClose: 3000,
+        });
+      } else {
+        await axios.post("http://localhost:8080/product/create", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
+        toast.success("Product created successfully!", {
+          autoClose: 3000,
+        });
       }
+
+      navigate("/product");
     } catch (error) {
-      console.error("Error adding product:", error);
+      console.error("Error adding/updating product:", error);
     }
   };
 
   useEffect(() => {
     const handleCategory = async () => {
-      console.log("Fetching categories");
       try {
-        let res = await axios.get(`http://localhost:8080/category/${storeID}`);
-        console.log("res.data", res.data.categories);
+        let res = await axios.get(`http://localhost:8080/category/select/${storeID}`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
+        console.log("res.data ######", res.data);
         setProductCat(res.data.categories);
       } catch (error) {
         console.error("Error fetching categories:", error);
@@ -57,13 +101,6 @@ function AddProduct() {
       handleCategory();
     }
   }, [storeID]);
-
-  const handleClick = () => {
-    navigate("/product");
-    toast.success("Product created successfully!", {
-      autoClose: 3000,
-    });
-  };
 
   const handleFilesChange = (newFiles) => {
     setProductImages(newFiles);
@@ -86,7 +123,7 @@ function AddProduct() {
               <label htmlFor="productCategory" className="form-label">
                 Category
               </label>
-              <select className="form-select" id="productCategory" onChange={(e) => setProductCategory(e.target.value)}>
+              <select className="form-select" id="productCategory" value={productCategory} onChange={(e) => setProductCategory(e.target.value)}>
                 {productCat && productCat.length > 0 ? (
                   <>
                     <option value="0">Select a category</option>
@@ -115,7 +152,12 @@ function AddProduct() {
               <label htmlFor="productStatus" className="form-label">
                 Status
               </label>
-              <select className="form-select" aria-label="Default select example" defaultValue={0} onChange={(e) => setProductStatus(e.target.value)}>
+              <select
+                className="form-select"
+                aria-label="Default select example"
+                value={productStatus}
+                onChange={(e) => setProductStatus(e.target.value)}
+              >
                 <option value="0">Status</option>
                 <option value="Active">Active</option>
                 <option value="Inactive">Inactive</option>
@@ -127,7 +169,7 @@ function AddProduct() {
               <label htmlFor="productImages" className="form-label">
                 Images
               </label>
-              <Dropzone className="p-5  border text-center rounded" onFilesChange={handleFilesChange} />
+              <Dropzone className="p-5 border text-center rounded" onFilesChange={handleFilesChange} existingImages={productImages} />
             </div>
           </div>
         </div>
@@ -139,4 +181,4 @@ function AddProduct() {
   );
 }
 
-export default AddProduct;
+export default AddEditProduct;

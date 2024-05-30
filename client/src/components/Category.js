@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 import Modal from "./Modal";
 import { FaPenToSquare, FaRegTrashCan } from "react-icons/fa6";
 import { useStoreID } from "../App";
+import { useAuth } from "../util/RoleContext";
 
 function Category() {
+  const url = "http://localhost:8080/";
   const navigate = useNavigate();
   const [categories, setCategories] = useState([]);
   const [filter, setFilter] = useState("");
@@ -15,6 +17,7 @@ function Category() {
   const [totalPages, setTotalPages] = useState(1);
   const [deleteItemId, setDeleteItemId] = useState(null);
   const { storeID } = useContext(useStoreID);
+  const auth = useAuth();
 
   // Modal variables
   const dataModal = {
@@ -27,11 +30,16 @@ function Category() {
   async function fetchCategories() {
     try {
       const res = await axios.get(
-        `http://localhost:8080/category/?storeID=${storeID}&page=${currentPage}&perPage=${perPage}&filter=${filter}&status=${status}`
+        `http://localhost:8080/category/?storeID=${storeID}&page=${currentPage}&perPage=${perPage}&filter=${filter}&status=${status}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
       );
+      console.log("#######", res.data.categories);
       setCategories(res.data.categories);
       setTotalPages(res.data.totalPages);
-      console.log("totalPages here:", totalPages);
       if (currentPage > totalPages) {
         setCurrentPage(totalPages);
       }
@@ -40,15 +48,21 @@ function Category() {
     }
   }
   useEffect(() => {
-    fetchCategories();
-  }, [currentPage, perPage, totalPages, filter, status]);
+    if (storeID) {
+      fetchCategories();
+    }
+  }, [currentPage, perPage, totalPages, filter, status, storeID]);
 
   const handleClick = () => {
     navigate("/add-category");
   };
   const handleDelete = async (id) => {
     try {
-      const res = await axios.delete(`http://localhost:8080/category/${id}`);
+      const res = await axios.delete(`http://localhost:8080/category/${id}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
       fetchCategories();
     } catch (error) {
       console.error("Error fetching categories:", error);
@@ -58,12 +72,16 @@ function Category() {
   return (
     <div className="container ">
       <div className="d-flex justify-content-between mb-5">
-        <h2>Categories {storeID && storeID}</h2>
-        <div className=" text-end">
-          <button type="submit" className="btn btn-primary " onClick={handleClick}>
-            Add category
-          </button>
-        </div>
+        <h2>Categories</h2>
+        {auth.role === "admin" && (
+          <>
+            <div className=" text-end">
+              <button type="submit" className="btn btn-primary " onClick={handleClick}>
+                Add category
+              </button>
+            </div>
+          </>
+        )}
       </div>
       <div className="border rounded p-2 ">
         <div className="d-flex justify-content-between gap-2 m-2 ">
@@ -102,9 +120,6 @@ function Category() {
                     <input className="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
                   </div>
                 </th>
-                <th scope="col" className="col-1">
-                  Image
-                </th>
                 <th scope="col col-3">Name</th>
                 <th scope="col col-2">Category</th>
                 <th scope="col col-1" colSpan="2">
@@ -127,13 +142,9 @@ function Category() {
                         <input className="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
                       </div>
                     </td>
-                    <td className="align-middle">
-                      <div className="">
-                        <img src={category.image} className="rounded w-16" alt={category.name} />
-                      </div>
-                    </td>
+
                     <td className="align-middle col-3">{category.name}</td>
-                    <td className="align-middle">{category.categoryID.name}</td>
+                    <td className="align-middle">{category.categoryID && category.categoryID.name}</td>
                     <td className="align-middle">{category.status}</td>
                     <td className="align-middle text-center">
                       <div className="d-flex justify-content-evenly">

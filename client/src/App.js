@@ -12,7 +12,7 @@ import Dashboard from "./components/Dashboard";
 import Order from "./components/Order";
 import Customer from "./components/Customer";
 import Category from "./components/Category";
-import AddProduct from "./components/AddProduct";
+import AddEditProduct from "./components/AddEditProduct";
 import AddStore from "./components/AddStore";
 import ProtectedRoutes from "./util/ProtectedRoutes";
 import InitialRoute from "./util/InitialRoute";
@@ -22,6 +22,9 @@ import Store from "./components/Store";
 import Test from "./components/Test";
 import AddTeam from "./components/AddTeam";
 import AddCategory from "./components/AddCategory";
+import RoleRoutes from "./util/RoleRoutes";
+import { AuthProvider } from "./util/RoleContext";
+import Team from "./components/Team";
 export const useStoreID = createContext();
 
 function App() {
@@ -36,43 +39,50 @@ function App() {
   }, []);
   return (
     <useStoreID.Provider value={{ storeID, setStoreID }}>
-      {isStorePath ? (
-        <Store name={name} />
-      ) : (
-        <Router>
-          <ToastContainer />
-          <div className="d-lg-flex ">
-            {isAuthenticated && <Sidebar />}
-            <div className=" d-flex  gap-5 flex-grow-1 mt-5">
-              <Routes>
-                <Route element={<ProtectedRoutes />}>
-                  <Route element={<InitialRoute />}>
-                    <Route path="/" element={<Dashboard />} />
-                    <Route path="/product" element={<Product />} />
-                    <Route path="/order" element={<Order />} />
-                    <Route path="/category" element={<Category />} />
-                    <Route path="/customer" element={<Customer />} />
-                    <Route path="/add-product" element={<AddProduct />} />
-                    <Route path="/add-category" element={<AddCategory />} />
-                    <Route path="/navigation" element={<AddStore />} />
-                    <Route path="/pages" element={<AddStore />} />
-                    <Route path="/domaine" element={<AddStore />} />
-                    <Route path="/themes" element={<Test />} />
-                    <Route path="/add-team" element={<AddTeam />} />
+      <AuthProvider>
+        {isStorePath ? (
+          <Store name={name} />
+        ) : (
+          <Router>
+            <ToastContainer />
+            <div className="d-lg-flex ">
+              {isAuthenticated && <Sidebar setIsAuthenticated={setIsAuthenticated} />}
+              <div className=" d-flex  gap-5 flex-grow-1 mt-5">
+                <Routes>
+                  <Route element={<ProtectedRoutes />}>
+                    <Route element={<InitialRoute />}>
+                      <Route path="/" element={<Dashboard />} />
+                      <Route path="/product" element={<Product />} />
+                      <Route path="/order" element={<Order />} />
+                      <Route path="/category" element={<Category />} />
+                      <Route path="/customer" element={<Customer />} />
+                      <Route element={<RoleRoutes />}>
+                        <Route path="/add-product" element={<AddEditProduct />} />
+                        <Route path="/edit-product/:id" element={<AddEditProduct />} />
+                        <Route path="/add-category" element={<AddCategory />} />
+                        <Route path="/navigation" element={<AddStore />} />
+                        <Route path="/pages" element={<AddStore />} />
+                        <Route path="/team" element={<AddTeam />} />
+                        <Route path="/domaine" element={<AddStore />} />
+                        <Route path="/themes" element={<Test />} />
+                      </Route>
+                    </Route>
+                    <Route element={<RoleRoutes />}>
+                      <Route path="/add-store" element={<AddStore />} />
+                    </Route>
                   </Route>
-                  <Route path="/add-store" element={<AddStore />} />
-                </Route>
 
-                <Route path="/login" element={<Login />} />
-                <Route path="/signup" element={<Signup />} />
-                <Route path="/store/:name" element={<Store />} />
+                  <Route path="/login" element={<Login setIsAuthenticated={setIsAuthenticated} />} />
+                  <Route path="/signup" element={<Signup />} />
+                  <Route path="/store/:name" element={<Store />} />
 
-                <Route path="*" element={<Signup />} />
-              </Routes>
+                  <Route path="*" element={<Signup />} />
+                </Routes>
+              </div>
             </div>
-          </div>
-        </Router>
-      )}
+          </Router>
+        )}
+      </AuthProvider>
     </useStoreID.Provider>
   );
 }

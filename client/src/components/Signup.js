@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function Signup() {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
+  const navigate = useNavigate();
 
   const validate = () => {
     const errors = {};
@@ -40,11 +41,11 @@ function Signup() {
     setErrors({});
     console.log(data);
     let res = await axios.post(`http://localhost:8080/user/signup`, data);
-
+    navigate("/login");
     console.log(res);
   }
   const handleLogin = () => {
-    Navigate("/signup");
+    navigate("/login");
   };
   return (
     <>
