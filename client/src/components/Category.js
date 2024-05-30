@@ -1,14 +1,14 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
-import baseURL from "../config";
+import { baseURL } from "../config";
 import Modal from "./Modal";
 import { FaPenToSquare, FaRegTrashCan } from "react-icons/fa6";
 import { useStoreID } from "../App";
 import { useAuth } from "../util/RoleContext";
 
 function Category() {
-  const url = "http://localhost:8080/";
+  const url = baseURL;
   const navigate = useNavigate();
   const [categories, setCategories] = useState([]);
   const [filter, setFilter] = useState("");

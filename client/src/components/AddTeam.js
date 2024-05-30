@@ -1,13 +1,14 @@
 import React, { useState, useEffect, useContext } from "react";
 import emailjs from "emailjs-com";
 import axios from "axios";
-import baseURL from "../config";
+import { baseURL } from "../config";
 import { useStoreID } from "../App";
 import Team from "./Team";
 
 const AddTeam = () => {
   const { storeID } = useContext(useStoreID);
   const [teams, setTeams] = useState([]);
+  const url = baseURL;
 
   const [formData, setFormData] = useState({
     name: "",
@@ -17,7 +18,7 @@ const AddTeam = () => {
   });
   async function userStore() {
     try {
-      let res = await axios.get(`${baseURL}/store/${storeID}`);
+      let res = await axios.get(`${url}/store/${storeID}`);
       setFormData({ ...formData, storeID: res.data.name }); // Update formData
     } catch (error) {
       console.error("Error fetching store data:", error);
@@ -43,7 +44,7 @@ const AddTeam = () => {
   };
   async function fetchTeams() {
     try {
-      const res = await axios.get(`${baseURL}/user/store/${storeID}`);
+      const res = await axios.get(`${url}/user/store/${storeID}`);
       console.log("res.data.users", res.data.users);
       setTeams(res.data.users);
     } catch (error) {
@@ -85,7 +86,7 @@ const AddTeam = () => {
       };
       console.log("userData ddd", userData);
       console.log("dataaaaa", formData);
-      const res = await axios.post(`${baseURL}/user/signup`, userData);
+      const res = await axios.post(`${url}/user/signup`, userData);
       console.log("User signed up successfully:", res.data);
     } catch (error) {
       console.error("Error signing up user:", error);

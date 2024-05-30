@@ -3,7 +3,7 @@ import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../util/RoleContext";
-import baseURL from "../config";
+import { baseURL } from "../config";
 
 function Login({ setIsAuthenticated }) {
   const [email, setEmail] = useState("");
@@ -11,6 +11,7 @@ function Login({ setIsAuthenticated }) {
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
   const auth = useAuth();
+  console.log(baseURL);
 
   let token, id, name, role;
   let decoded;

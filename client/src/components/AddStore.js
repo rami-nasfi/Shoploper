@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import baseURL from "../config";
+import { baseURL } from "../config";
 import { useNavigate } from "react-router-dom";
 
 function AddStore() {
@@ -32,7 +32,7 @@ function AddStore() {
         errors.storeName = "Store name not available";
         setErrors(errors);
       }
-      let res = await axios.post("http://localhost:8080/store/create", { name: storeName, userID: localStorage.getItem("id") });
+      let res = await axios.post(`${baseURL}/store/create`, { name: storeName, userID: localStorage.getItem("id") });
       console.log("resssssss", res.data.length);
       let storeID = res.data[res.data.length - 1]._id;
       localStorage.setItem("storeID", storeID);

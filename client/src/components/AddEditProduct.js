@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
-import baseURL from "../config";
+import { baseURL } from "../config";
 import { toast } from "react-toastify";
 import Dropzone from "./Dropzone";
 import { useStoreID } from "../App";
@@ -67,7 +67,7 @@ function AddEditProduct() {
           autoClose: 3000,
         });
       } else {
-        await axios.post("http://localhost:8080/product/create", formData, {
+        await axios.post(`${baseURL}/product/create`, formData, {
           headers: {
             "Content-Type": "multipart/form-data",
             Authorization: `Bearer ${localStorage.getItem("token")}`,

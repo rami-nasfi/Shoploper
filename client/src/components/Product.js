@@ -1,14 +1,13 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
-import baseURL from "../config";
+import { baseURL } from "../config";
 import Modal from "./Modal";
 import { FaPenToSquare, FaRegTrashCan } from "react-icons/fa6";
 import { useStoreID } from "../App";
 import { useAuth } from "../util/RoleContext";
 
 function Product() {
-  const url = "http://localhost:8080/";
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
   const [filter, setFilter] = useState("");
@@ -19,7 +18,7 @@ function Product() {
   const [deleteItemId, setDeleteItemId] = useState(null);
   const { storeID } = useContext(useStoreID);
   const auth = useAuth();
-
+  const url = baseURL;
   // Modal variables
   const dataModal = {
     msgModal: "Are you sure you want to delete this item?",
@@ -30,7 +29,7 @@ function Product() {
 
   async function fetchProducts() {
     try {
-      const res = await axios.get(`${baseURL}/product/?storeID=${storeID}&page=${currentPage}&perPage=${perPage}&filter=${filter}&status=${status}`, {
+      const res = await axios.get(`${url}/product/?storeID=${storeID}&page=${currentPage}&perPage=${perPage}&filter=${filter}&status=${status}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -59,7 +58,7 @@ function Product() {
   };
   const handleDelete = async (id) => {
     try {
-      const res = await axios.delete(`${baseURL}/product/${id}`, {
+      const res = await axios.delete(`${url}/product/${id}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },

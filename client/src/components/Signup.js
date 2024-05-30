@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import baseURL from "../config";
+import { baseURL } from "../config";
 import { useNavigate } from "react-router-dom";
 
 function Signup() {
@@ -33,6 +33,7 @@ function Signup() {
       name,
       email,
       password,
+      role: "admin",
     };
     const validationErrors = validate();
     if (Object.keys(validationErrors).length > 0) {
