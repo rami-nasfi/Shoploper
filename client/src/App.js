@@ -23,7 +23,6 @@ import AddTeam from "./components/AddTeam";
 import AddCategory from "./components/AddCategory";
 import RoleRoutes from "./util/RoleRoutes";
 import { AuthProvider } from "./util/RoleContext";
-import Team from "./components/Team";
 export const useStoreID = createContext();
 
 function App() {
