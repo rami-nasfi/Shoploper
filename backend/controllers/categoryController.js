@@ -1,5 +1,5 @@
-const { model } = require("mongoose");
 const Category = require("../models/categoryModel");
+const cloudinary = require("../utils/cloudinary");
 
 // Display all categories
 const getAllCategories = async (req, res) => {
@@ -18,7 +18,6 @@ const getAllCategories = async (req, res) => {
     const categories = await Category.find(filterCondition).skip(skip).limit(perPage).populate({
       path: "categoryID",
     });
-    console.log("##########################", categories);
     res.send({ categories, totalPages });
   } catch (error) {
     res.status(500).send({ message: "Error fetching categories", error });
@@ -48,7 +47,9 @@ const getOneCategory = async (req, res) => {
 const createCategory = async (req, res) => {
   try {
     let category = req.body;
-    console.log(category);
+    const image = await cloudinary.uploader.upload(req.file.path);
+    category.image = image.secure_url;
+    console.log("category", category);
     await Category.create(category);
     let categories = await Category.find();
     res.send(categories);

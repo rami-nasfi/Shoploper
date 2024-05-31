@@ -120,6 +120,7 @@ function Category() {
                     <input className="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
                   </div>
                 </th>
+                <th scope="col col-3">Image</th>
                 <th scope="col col-3">Name</th>
                 <th scope="col col-2">Category</th>
                 <th scope="col col-1" colSpan="2">
@@ -143,8 +144,13 @@ function Category() {
                       </div>
                     </td>
 
+                    <td className="align-middle">
+                      <div className="">
+                        <img src={category.image} className="rounded w-16" alt={category.image} />
+                      </div>
+                    </td>
                     <td className="align-middle col-3">{category.name}</td>
-                    <td className="align-middle">{category.categoryID && category.categoryID.name}</td>
+                    <td className="align-middle">{category.categoryID ? category.categoryID.name : "-"}</td>
                     <td className="align-middle">{category.status}</td>
                     <td className="align-middle text-center">
                       <div className="d-flex justify-content-evenly">

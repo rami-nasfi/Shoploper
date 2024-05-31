@@ -38,7 +38,6 @@ function Product() {
           },
         }
       );
-      console.log("#######", res.data.products);
       setProducts(res.data.products);
       setTotalPages(res.data.totalPages);
       if (currentPage > totalPages) {
@@ -156,7 +155,7 @@ function Product() {
                     </td>
                     <td className="align-middle">
                       <div className="">
-                        <img src={process.env.REACT_APP_BACKEND_API + product.images["0"]} className="rounded w-16" alt={product.name} />
+                        <img src={product.images["0"]} className="rounded w-16" alt={product.name} />
                       </div>
                     </td>
                     <td className="align-middle col-3">{product.name}</td>

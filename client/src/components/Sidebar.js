@@ -69,6 +69,7 @@ function Sidebar() {
   const handleLogout = () => {
     localStorage.clear();
     auth.setRole(null);
+    setStoreID(null);
     navigate("/login");
   };
   useEffect(() => {
@@ -93,9 +94,6 @@ function Sidebar() {
 
       <div className="offcanvas-lg offcanvas-start d-lg-flex flex-column vh-100 overflow-y-auto  " tabIndex="-1" id="offcanvasSidebar">
         <div className="offcanvas-header d-lg-none">
-          <h5 className="offcanvas-title" id="offcanvasSidebarLabel">
-            Sidebar
-          </h5>
           <button
             type="button"
             className="btn-close text-reset"
@@ -175,7 +173,7 @@ function Sidebar() {
               <>
                 <li className="nav-item">
                   <Link
-                    className={`nav-link d-flex align-items-center dropdown-toggle `}
+                    className="nav-link d-flex align-items-center dropdown-toggle "
                     data-bs-toggle="collapse"
                     data-bs-target="#onlineShopMenu"
                     aria-expanded="false"
@@ -228,8 +226,7 @@ function Sidebar() {
             )}
             <li className="nav-item mt-3">
               <Link
-                className={`nav-link d-flex align-items-center dropdown-toggle ${activeLink === "Profile" ? "active" : ""}`}
-                onClick={() => handleSetActiveLink("Profile")}
+                className="nav-link d-flex align-items-center dropdown-toggle"
                 data-bs-toggle="collapse"
                 data-bs-target="#profileMenu"
                 aria-expanded="false"

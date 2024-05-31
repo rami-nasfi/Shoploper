@@ -50,12 +50,13 @@ function AddEditProduct() {
       formData.append("status", productStatus);
       formData.append("categoryID", productCategory);
       formData.append("price", productPrice);
-      console.log("productImages", productImages);
 
       productImages.forEach((image) => {
         formData.append("images", image);
       });
-
+      for (let [key, value] of formData.entries()) {
+        console.log(`${key}:`, value);
+      }
       if (id) {
         await axios.put(`${process.env.REACT_APP_BACKEND_API}/product/${id}`, formData, {
           headers: {

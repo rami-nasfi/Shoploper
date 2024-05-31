@@ -8,7 +8,6 @@ function Dropzone({ className, onFilesChange, existingImages }) {
   useEffect(() => {
     // Load existing images when editing
     if (existingImages && existingImages.length > 0) {
-      console.log("files", files);
       setFiles(existingImages);
     }
   }, [existingImages]);
@@ -43,7 +42,7 @@ function Dropzone({ className, onFilesChange, existingImages }) {
       <ul className="nav nav-pills d-flex gap-4 justify-content-center">
         {files.map((file, index) => (
           <li key={index} className="position-relative">
-            <img src={file.preview ? file.preview : "http://localhost:8080/" + file} alt={file.name} className="imgDragzone rounded border" />
+            <img src={file.preview ? file.preview : file} alt={file.name} className="imgDragzone rounded border" />
             <h3>
               <a
                 href="#"
