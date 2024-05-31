@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { baseURL } from "../config";
 
 function AddCategory() {
   const [categoryName, setCategoryName] = useState("");
@@ -19,7 +18,7 @@ function AddCategory() {
       };
 
       await axios.post(
-        `${baseURL}
+        `${process.env.REACT_APP_BACKEND_API}
 /category/create`,
         data
       );
@@ -31,7 +30,7 @@ function AddCategory() {
     try {
       storeID = "663f96cab533dfb5acc21748";
       setCategoryCategory(
-        await axios.get(`${baseURL}
+        await axios.get(`${process.env.REACT_APP_BACKEND_API}
 /category/select/${storeID}`)
       );
     } catch (error) {

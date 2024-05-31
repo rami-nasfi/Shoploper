@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
-import { baseURL } from "../config";
+
 import { toast } from "react-toastify";
 import Dropzone from "./Dropzone";
 import { useStoreID } from "../App";
@@ -22,7 +22,7 @@ function AddEditProduct() {
     const fetchProduct = async () => {
       if (id) {
         try {
-          const res = await axios.get(`${baseURL}/product/${id}`, {
+          const res = await axios.get(`${process.env.REACT_APP_BACKEND_API}/product/${id}`, {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
@@ -57,7 +57,7 @@ function AddEditProduct() {
       });
 
       if (id) {
-        await axios.put(`${baseURL}/product/${id}`, formData, {
+        await axios.put(`${process.env.REACT_APP_BACKEND_API}/product/${id}`, formData, {
           headers: {
             "Content-Type": "multipart/form-data",
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -67,7 +67,7 @@ function AddEditProduct() {
           autoClose: 3000,
         });
       } else {
-        await axios.post(`${baseURL}/product/create`, formData, {
+        await axios.post(`${process.env.REACT_APP_BACKEND_API}/product/create`, formData, {
           headers: {
             "Content-Type": "multipart/form-data",
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -87,7 +87,7 @@ function AddEditProduct() {
   useEffect(() => {
     const handleCategory = async () => {
       try {
-        let res = await axios.get(`${baseURL}/category/select/${storeID}`, {
+        let res = await axios.get(`${process.env.REACT_APP_BACKEND_API}/category/select/${storeID}`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },

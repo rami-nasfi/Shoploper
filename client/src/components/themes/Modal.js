@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
-import { baseURL } from "../../config";
 import { useStoreID } from "../../App";
 
 function Modal({ itemEdit, handleAddItem, setX }) {
@@ -22,7 +21,7 @@ function Modal({ itemEdit, handleAddItem, setX }) {
 
   const fetchCategories = async () => {
     try {
-      const res = await axios.get(`${baseURL}/category/select/${storeID}`, {
+      const res = await axios.get(`${process.env.REACT_APP_BACKEND_API}/category/select/${storeID}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -39,7 +38,7 @@ function Modal({ itemEdit, handleAddItem, setX }) {
 
   const fetchProducts = async () => {
     try {
-      const res = await axios.get(`${baseURL}/products`);
+      const res = await axios.get(`${process.env.REACT_APP_BACKEND_API}/products`);
       if (res.data && Array.isArray(res.data)) {
         setProducts(res.data);
       } else {
@@ -52,7 +51,7 @@ function Modal({ itemEdit, handleAddItem, setX }) {
 
   const fetchPages = async () => {
     try {
-      const res = await axios.get(`${baseURL}/pages`);
+      const res = await axios.get(`${process.env.REACT_APP_BACKEND_API}/pages`);
       if (res.data && Array.isArray(res.data)) {
         setPages(res.data);
       } else {

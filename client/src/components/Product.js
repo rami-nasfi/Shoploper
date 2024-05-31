@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
-import { baseURL } from "../config";
+
 import Modal from "./Modal";
 import { FaPenToSquare, FaRegTrashCan } from "react-icons/fa6";
 import { useStoreID } from "../App";
@@ -30,7 +30,7 @@ function Product() {
   async function fetchProducts() {
     try {
       const res = await axios.get(
-        `${baseURL}
+        `${process.env.REACT_APP_BACKEND_API}
 /product/?storeID=${storeID}&page=${currentPage}&perPage=${perPage}&filter=${filter}&status=${status}`,
         {
           headers: {
@@ -63,7 +63,7 @@ function Product() {
   const handleDelete = async (id) => {
     try {
       const res = await axios.delete(
-        `${baseURL}
+        `${process.env.REACT_APP_BACKEND_API}
 /product/${id}`,
         {
           headers: {
@@ -156,7 +156,7 @@ function Product() {
                     </td>
                     <td className="align-middle">
                       <div className="">
-                        <img src={baseURL + product.images["0"]} className="rounded w-16" alt={product.name} />
+                        <img src={process.env.REACT_APP_BACKEND_API + product.images["0"]} className="rounded w-16" alt={product.name} />
                       </div>
                     </td>
                     <td className="align-middle col-3">{product.name}</td>

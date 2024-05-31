@@ -1,8 +1,8 @@
 import React from "react";
-import MainNavigation from "./themes/MainNavigation";
-import CarouselImage from "./themes/CarouselImage";
-import CategoryListCard from "./themes/CategoryListCard";
-import ProductListCard from "./themes/ProductListCard";
+// import MainNavigation from "./themes/MainNavigation";
+// import CarouselImage from "./themes/CarouselImage";
+// import CategoryListCard from "./themes/CategoryListCard";
+// import ProductListCard from "./themes/ProductListCard";
 
 function Test() {
   return (

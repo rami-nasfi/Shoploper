@@ -1,18 +1,18 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { baseURL } from "../config";
+
 import { useNavigate } from "react-router-dom";
 
-function AddStore() {
+function AddStore({ setStoreID }) {
   const navigate = useNavigate();
-  const [storeName, setStoreName] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
   const [errors, setErrors] = useState({});
   const validate = () => {
     const errors = {};
-    if (!storeName) {
-      errors.storeName = "Store name is required";
-    } else if (!/^(?!-)(?!.*--)[A-Za-z0-9-]{1,63}(?<!-)$/.test(storeName)) {
-      errors.storeName = "Store name is invalid";
+    if (!errorMsg) {
+      errors.errorMsg = "Store name is required";
+    } else if (!/^(?!-)(?!.*--)[A-Za-z0-9-]{1,63}(?<!-)$/.test(errorMsg)) {
+      errors.errorMsg = "Store name is invalid";
     }
     return errors;
   };
@@ -27,18 +27,15 @@ function AddStore() {
     setErrors({});
 
     try {
-      let check = await axios.get(`${baseURL}/store/name/${storeName}`);
-      if (check.data.length > 0) {
-        errors.storeName = "Store name not available";
-        setErrors(errors);
-      }
-      let res = await axios.post(`${baseURL}/store/create`, { name: storeName, userID: localStorage.getItem("id") });
-      console.log("resssssss", res.data.length);
+      let res = await axios.post(`${process.env.REACT_APP_BACKEND_API}/store/create`, { name: errorMsg, userID: localStorage.getItem("id") });
+      console.log(res);
       let storeID = res.data[res.data.length - 1]._id;
+      setStoreID(storeID);
       localStorage.setItem("storeID", storeID);
-      if (res.status === 200) handleClick();
+      handleClick();
     } catch (error) {
-      console.log(error);
+      setErrors({ errorMsg: error.response.data.errorMsg });
+      console.log("error #  #", error);
     }
   };
 
@@ -61,18 +58,18 @@ function AddStore() {
                   class="form-control"
                   aria-label="Recipient's username"
                   aria-describedby="basic-addon2"
-                  id="storeName"
+                  id="errorMsg"
                   placeholder="Please write your store name"
                   onChange={(e) => {
                     setErrors({});
-                    setStoreName(e.target.value);
+                    setErrorMsg(e.target.value);
                   }}
                 />
                 <span class="input-group-text" id="basic-addon2">
                   .shoploper.com
                 </span>
               </div>
-              {errors.storeName && <small className="text-danger">{errors.storeName}</small>}
+              {errors.errorMsg && <small className="text-danger">{errors.errorMsg}</small>}
             </div>
             <button type="submit" className="btn btn-primary">
               Submit

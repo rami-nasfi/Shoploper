@@ -11,14 +11,31 @@ const getAllStores = async (req, res) => {
   }
 };
 
-//display one store
-const getOneStore = async (req, res) => {
+//display store by name
+const getStoreByName = async (req, res) => {
   try {
-    let id = req.params.id;
-    let names = await Store.findById(id);
-    res.send(names);
+    const name = req.params.name;
+    const store = await Store.findOne({ name: name });
+    if (!store) {
+      return res.status(404).send({ message: "Store not found" });
+    }
+    res.status(200).send(store);
   } catch (error) {
-    res.send(error);
+    res.status(500).send({ message: "Server Error", error });
+  }
+};
+
+//display store by id
+const getStoreById = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const store = await Store.findById(id);
+    if (!store) {
+      return res.status(404).send({ message: "Store not found" });
+    }
+    res.status(200).send(store);
+  } catch (error) {
+    res.status(500).send({ message: "Server Error", error });
   }
 };
 
@@ -38,12 +55,12 @@ const createStore = async (req, res) => {
   try {
     let { name, userID } = req.body;
     if (!name) {
-      return res.status(500).send({ msg: "Fill the required information" });
+      return res.status(500).send({ errorMsg: "Fill the required information" });
     }
     const isReserved = await Store.find({ name });
     console.log(isReserved.length);
     if (isReserved.length > 0) {
-      return res.status(500).send({ msg: "Name not available" });
+      return res.status(500).send({ errorMsg: "Name not available" });
     }
     await Store.create({ name, userID });
     let names = await Store.find({ userID });
@@ -77,4 +94,4 @@ const deleteStore = async (req, res) => {
   }
 };
 
-module.exports = { getAllStores, createStore, deleteStore, updateStore, getOneStore, getUserStore };
+module.exports = { getAllStores, createStore, deleteStore, updateStore, getStoreById, getStoreByName, getUserStore };

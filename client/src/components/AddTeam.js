@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import emailjs from "emailjs-com";
 import axios from "axios";
-import { baseURL } from "../config";
+
 import { useStoreID } from "../App";
 import Team from "./Team";
 
@@ -17,7 +17,7 @@ const AddTeam = () => {
   });
   async function userStore() {
     try {
-      let res = await axios.get(`${baseURL}
+      let res = await axios.get(`${process.env.REACT_APP_BACKEND_API}
 /store/${storeID}`);
       setFormData({ ...formData, storeID: res.data.name }); // Update formData
     } catch (error) {
@@ -44,7 +44,7 @@ const AddTeam = () => {
   };
   async function fetchTeams() {
     try {
-      const res = await axios.get(`${baseURL}
+      const res = await axios.get(`${process.env.REACT_APP_BACKEND_API}
 /user/store/${storeID}`);
       console.log("res.data.users", res.data.users);
       setTeams(res.data.users);
@@ -88,7 +88,7 @@ const AddTeam = () => {
       console.log("userData ddd", userData);
       console.log("dataaaaa", formData);
       const res = await axios.post(
-        `${baseURL}
+        `${process.env.REACT_APP_BACKEND_API}
 /user/signup`,
         userData
       );

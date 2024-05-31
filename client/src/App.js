@@ -45,7 +45,7 @@ function App() {
           <Router>
             <ToastContainer />
             <div className="d-lg-flex ">
-              {isAuthenticated && <Sidebar setIsAuthenticated={setIsAuthenticated} />}
+              {isAuthenticated && storeID && <Sidebar setIsAuthenticated={setIsAuthenticated} />}
               <div className=" d-flex  gap-5 flex-grow-1 mt-5">
                 <Routes>
                   <Route element={<ProtectedRoutes />}>
@@ -66,10 +66,9 @@ function App() {
                       </Route>
                     </Route>
                     <Route element={<RoleRoutes />}>
-                      <Route path="/add-store" element={<AddStore />} />
+                      <Route path="/add-store" element={<AddStore setStoreID={setStoreID} />} />
                     </Route>
                   </Route>
-
                   <Route path="/login" element={<Login setIsAuthenticated={setIsAuthenticated} />} />
                   <Route path="/signup" element={<Signup />} />
                   <Route path="/store/:name" element={<Store />} />
