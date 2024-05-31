@@ -1,5 +1,6 @@
 const { model } = require("mongoose");
 const User = require("../models/userModel");
+const Store = require("../models/storeModel");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const verifyToken = require("../middlewares/auth");
@@ -85,6 +86,7 @@ const signupUser = async (req, res) => {
 //login user
 const loginUser = async (req, res) => {
   try {
+    console.log("login start");
     const { email, password } = req.body;
     if (!email || !password) {
       return res.status(400).send({ msg: "Fill in both email and password" });
@@ -98,12 +100,14 @@ const loginUser = async (req, res) => {
     if (!match) {
       return res.status(401).send({ msg: "Invalid email or password" });
     }
-    console.log("token");
+    const store = (await Store.find({ userID: user.id })) || [];
+    console.log(store);
     let token = jwt.sign({ id: user.id, name: user.name, email: user.email }, process.env.SECRET_KEY);
     let id = user.id;
     let name = user.name;
     let role = user.role;
-    res.send({ msg: "Login successfully", token, id, name, role });
+
+    res.send({ msg: "Login successfully", token, id, name, role, store });
   } catch (error) {
     res.send(error);
   }

@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../util/RoleContext";
+import { useStoreID } from "../App";
 
-function Login({ setIsAuthenticated }) {
+function Login() {
+  const { setStoreID } = useContext(useStoreID);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
@@ -40,23 +42,18 @@ function Login({ setIsAuthenticated }) {
 
     const data = { email, password };
     try {
+      console.log("login start");
       const res = await axios.post(`${process.env.REACT_APP_BACKEND_API}/user/login/`, data);
       token = res.data.token;
       id = res.data.id;
       name = res.data.name;
       role = res.data.role;
-      let storeID;
-      if (role !== "staff") {
-        const resStoreID = await axios.get(`${process.env.REACT_APP_BACKEND_API}/store/user/${id}`);
-        if (resStoreID.data.length !== 0) {
-          storeID = resStoreID.data[0]._id;
-          console.log(storeID);
-        }
-      } else {
-        const resStoreID = await axios.get(`${process.env.REACT_APP_BACKEND_API}/store/${id}`);
-        storeID = resStoreID._id;
+      if (res.data.store.length > 0) {
+        let storeID = res.data.store[0]._id;
+        localStorage.setItem("storeID", storeID);
+        setStoreID(storeID);
       }
-      localStorage.setItem("storeID", storeID);
+
       localStorage.setItem("token", token);
       localStorage.setItem("id", id);
       localStorage.setItem("name", name);
@@ -64,7 +61,6 @@ function Login({ setIsAuthenticated }) {
       auth.setRole(role);
       console.log("login", auth);
       decoded = jwtDecode(token);
-      setIsAuthenticated(true);
       navigate("/");
     } catch (error) {
       console.error("Error logging in:", error);

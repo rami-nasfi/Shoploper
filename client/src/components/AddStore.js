@@ -1,12 +1,14 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import axios from "axios";
-
 import { useNavigate } from "react-router-dom";
+import { useStoreID } from "../App";
 
-function AddStore({ setStoreID }) {
+function AddStore() {
   const navigate = useNavigate();
   const [errorMsg, setErrorMsg] = useState("");
   const [errors, setErrors] = useState({});
+  const { setStoreID } = useContext(useStoreID);
+
   const validate = () => {
     const errors = {};
     if (!errorMsg) {

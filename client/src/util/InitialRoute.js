@@ -2,7 +2,7 @@ import React from "react";
 import { Navigate, Outlet } from "react-router-dom";
 
 function ProtectedRoutes() {
-  if (localStorage.getItem("storeID") === "undefined") {
+  if (!localStorage.getItem("storeID")) {
     return <Navigate to="/add-store" replace />;
   }
 

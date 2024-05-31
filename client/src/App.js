@@ -28,13 +28,13 @@ export const useStoreID = createContext();
 
 function App() {
   const [storeID, setStoreID] = useState(null);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const isStorePath = window.location.pathname.split("/")[1] === "store";
   const name = window.location.pathname.split("/")[2];
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    setIsAuthenticated(!!token);
+    if (localStorage.getItem("storeID")) {
+      setStoreID(localStorage.getItem("storeID"));
+    }
   }, []);
   return (
     <useStoreID.Provider value={{ storeID, setStoreID }}>
@@ -45,7 +45,7 @@ function App() {
           <Router>
             <ToastContainer />
             <div className="d-lg-flex ">
-              {isAuthenticated && storeID && <Sidebar setIsAuthenticated={setIsAuthenticated} />}
+              {storeID && <Sidebar />}
               <div className=" d-flex  gap-5 flex-grow-1 mt-5">
                 <Routes>
                   <Route element={<ProtectedRoutes />}>
@@ -66,10 +66,10 @@ function App() {
                       </Route>
                     </Route>
                     <Route element={<RoleRoutes />}>
-                      <Route path="/add-store" element={<AddStore setStoreID={setStoreID} />} />
+                      <Route path="/add-store" element={<AddStore />} />
                     </Route>
                   </Route>
-                  <Route path="/login" element={<Login setIsAuthenticated={setIsAuthenticated} />} />
+                  <Route path="/login" element={<Login />} />
                   <Route path="/signup" element={<Signup />} />
                   <Route path="/store/:name" element={<Store />} />
 

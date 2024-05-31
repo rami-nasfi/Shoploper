@@ -4,9 +4,7 @@ const { getAllStores, createStore, deleteStore, updateStore, getStoreById, getSt
 
 router.get("/", getAllStores);
 
-router.get("/:name", getStoreByName);
-
-router.get("/staff/:id", getStoreById);
+router.get("/:id", getStoreById);
 
 router.get("/user/:userID", getUserStore);
 

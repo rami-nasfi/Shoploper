@@ -2,13 +2,12 @@ import React, { useState, useEffect, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./css/Sidebar.css";
 import axios from "axios";
-
 import { FaUser, FaUserGroup, FaFileInvoiceDollar, FaFolderOpen, FaTag, FaChartPie, FaShop, FaBars } from "react-icons/fa6";
 import { useStoreID } from "../App";
 import bootstrapBundleMin from "bootstrap/dist/js/bootstrap.bundle.min";
 import { useAuth } from "../util/RoleContext";
 
-function Sidebar({ setIsAuthenticated }) {
+function Sidebar() {
   const [activeLink, setActiveLink] = useState("Home");
   const [stores, setStores] = useState([]);
   const { storeID, setStoreID } = useContext(useStoreID);
@@ -70,7 +69,6 @@ function Sidebar({ setIsAuthenticated }) {
   const handleLogout = () => {
     localStorage.clear();
     auth.setRole(null);
-    setIsAuthenticated(false);
     navigate("/login");
   };
   useEffect(() => {
