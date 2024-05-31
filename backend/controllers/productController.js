@@ -1,4 +1,5 @@
 const Product = require("../models/productModel");
+const cloudinary = require("../utils/cloudinary");
 
 // Display all products
 const getAllProducts = async (req, res) => {
@@ -36,8 +37,11 @@ const getOneProduct = async (req, res) => {
 // Create new product with image upload
 const createProduct = async (req, res) => {
   try {
+    const uploadPromises = req.files.map((file) => cloudinary.uploader.upload(file.path));
+    const uploadResults = await Promise.all(uploadPromises);
+    const images = uploadResults.map((result) => result.secure_url);
+
     const { name, status, categoryID, price } = req.body;
-    const images = req.files.map((file) => file.path); // Array of file paths
     const newProduct = new Product({ name, status, categoryID, price, images });
     await newProduct.save();
     res.status(201).send({ message: "Product created successfully", product: newProduct });

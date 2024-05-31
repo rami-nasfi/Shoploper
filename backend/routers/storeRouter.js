@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { getAllStores, createStore, deleteStore, updateStore, getStoreById, getStoreByName, getUserStore } = require("../controllers/storeController");
+const { getAllStores, createStore, deleteStore, updateStore, getStoreById, getUserStore } = require("../controllers/storeController");
 
 router.get("/", getAllStores);
 
