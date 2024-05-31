@@ -14,9 +14,15 @@ const orderRouter = require("./routers/orderRouter");
 const storeRouter = require("./routers/storeRouter");
 const verifyToken = require("./middlewares/auth");
 
+const corsOptions = {
+  origin: process.env.FRONTEND_URL, // Use your actual front-end URL
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+  credentials: true, // If you need to include cookies or authentication
+};
 // Middleware
 app.use(express.json());
-app.use(cors());
+app.use(cors(corsOptions));
 
 // Serve static files
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
