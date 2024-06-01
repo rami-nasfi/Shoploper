@@ -23,6 +23,7 @@ import AddTeam from "./components/AddTeam";
 import AddCategory from "./components/AddCategory";
 import RoleRoutes from "./util/RoleRoutes";
 import { AuthProvider } from "./util/RoleContext";
+import Themes from "./components/Themes";
 export const useStoreID = createContext();
 
 function App() {
@@ -62,6 +63,7 @@ function App() {
                         <Route path="/pages" element={<AddStore />} />
                         <Route path="/team" element={<AddTeam />} />
                         <Route path="/domaine" element={<AddStore />} />
+                        <Route path="/themes" element={<Themes />} />
                       </Route>
                     </Route>
                     <Route element={<RoleRoutes />}>

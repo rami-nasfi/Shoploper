@@ -28,7 +28,7 @@
 /* Sidebar.css */
 @media (min-width: 992px) {
   .offcanvas-lg {
-    position: static;
+    position: relative;
     width: 20%;
     height: auto;
     visibility: visible !important;
@@ -37,5 +37,11 @@
   }
   .offcanvas-body {
     display: block;
+  }
+}
+
+@media (max-width: 991.98px) {
+  #offcanvasSidebar {
+    position: absolute !important;
   }
 }
