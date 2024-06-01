@@ -1,6 +1,7 @@
 import React, { useState, createContext, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./App.scss";
+
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "./App.css";
@@ -46,7 +47,7 @@ function App() {
             <ToastContainer />
             <div className="d-lg-flex ">
               {storeID && <Sidebar />}
-              <div className=" d-flex  gap-5 flex-grow-1 mt-5">
+              <div className=" d-flex  gap-5 flex-grow-1 mt-5 w-80">
                 <Routes>
                   <Route element={<ProtectedRoutes />}>
                     <Route element={<InitialRoute />}>

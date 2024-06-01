@@ -6,11 +6,13 @@ import ProductListCard from "./themes/ProductListCard";
 
 function Themes() {
   return (
-    <div className="container d-flex flex-column gap-5 w-80">
-      <MainNavigation />
-      <CarouselImage />
-      <CategoryListCard />
-      <ProductListCard />
+    <div className="container ">
+      <div className="d-flex flex-column gap-5">
+        <MainNavigation />
+        <CarouselImage />
+        <CategoryListCard />
+        <ProductListCard />
+      </div>
     </div>
   );
 }

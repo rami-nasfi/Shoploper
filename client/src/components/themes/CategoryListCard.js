@@ -2,12 +2,15 @@ import React from "react";
 import CategoryCard from "./CategoryCard";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
+
 import { FaChevronRight, FaChevronLeft } from "react-icons/fa";
 
 function CategoryListCard() {
   const SampleNextArrow = ({ onClick }) => (
-    <div style={{ position: "absolute", top: "50%", right: "0px", cursor: "pointer", zIndex: 1, transform: "translate(0%, -50%)" }} onClick={onClick}>
+    <div
+      style={{ position: "absolute", top: "50%", right: "12px", cursor: "pointer", zIndex: 1, transform: "translate(0%, -50%)" }}
+      onClick={onClick}
+    >
       <FaChevronRight style={{ fontSize: "24px", color: "lightgray" }} />
     </div>
   );
@@ -19,11 +22,11 @@ function CategoryListCard() {
   );
   const settings = {
     dots: false,
-    // arrows: true,
+    arrows: true,
     infinite: true,
     slidesToShow: 4,
     slidesToScroll: 1,
-    autoplay: true,
+    autoplay: false,
     autoplaySpeed: 2000,
     nextArrow: <SampleNextArrow />,
     prevArrow: <SamplePrevArrow />,
@@ -32,7 +35,7 @@ function CategoryListCard() {
   return (
     <div className="">
       <h2>Featured Categories</h2>
-      <Slider {...settings}>
+      <Slider {...settings} className="d-flex justify-content-center">
         {[...Array(10)].map((x, i) => (
           <div className="">
             <CategoryCard />
