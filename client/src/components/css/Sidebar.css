@@ -46,3 +46,12 @@
     width: auto !important;
   }
 }
+.contentBlock {
+  margin-top: 124px !important;
+}
+.bg-blur {
+  backdrop-filter: blur(10px);
+}
+.nav-width {
+  width: 80%;
+}

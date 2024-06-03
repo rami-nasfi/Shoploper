@@ -1,15 +1,16 @@
-import { useEffect, useMemo, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { Reorder } from "framer-motion";
 import Modal from "./Modal";
+import { useTheme } from "../../util/ThemeContext";
+import axios from "axios";
 
 function MainNavigation() {
   const [edit, setEdit] = useState(false);
   const [x, setX] = useState({});
-  const [items, setItems] = useState([
-    { index: 1, text: "Home", link: "#" },
-    { index: 2, text: "Contact", link: "#" },
-    { index: 3, text: "About Us", link: "#" },
-  ]);
+  const theme = useTheme();
+  console.log("theme=>", theme.theme.nav);
+
+  const [items, setItems] = useState([]);
 
   const handleAddItem = (text, link, index) => {
     if (index) {
@@ -26,9 +27,25 @@ function MainNavigation() {
   }, [x]);
 
   useEffect(() => {
-    console.log("x:", x);
+    console.log("x#####:", x);
   }, [x]);
+  useEffect(() => {
+    if (theme.theme.nav) setItems(theme.theme.nav);
+  }, [theme.theme.nav]);
 
+  const handleReorder = async (newItems) => {
+    setItems(newItems);
+    theme.setTheme((prevTheme) => ({
+      ...prevTheme,
+      nav: newItems,
+    }));
+    try {
+      const res = await axios.post(`${process.env.REACT_APP_BACKEND_API}/theme/update/${theme.theme._id}`, { nav: newItems });
+      console.log(res);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <div>
       <nav
@@ -52,7 +69,7 @@ function MainNavigation() {
             <span className="navbar-toggler-icon"></span>
           </button>
           <div className="collapse navbar-collapse" id="navbarNav">
-            <Reorder.Group axis="x" values={items} onReorder={setItems} className="navbar-nav">
+            <Reorder.Group axis="x" values={items} onReorder={handleReorder} className="navbar-nav">
               {items.map((item) => (
                 <Reorder.Item key={item.index} value={item} className="nav-item">
                   <span

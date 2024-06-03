@@ -4,7 +4,9 @@ import { FaBagShopping, FaCommentDollar, FaUserGroup } from "react-icons/fa6";
 function Dashboard() {
   return (
     <div className="container">
-      <h2>Dashboard</h2>
+      <h2>
+        Dashboard <spam className="text-bg-danger">(static data:this page under constractor)</spam>
+      </h2>
       <div className="row mt-5">
         <div className="col-md-4 ">
           <div className="border rounded p-4 ">

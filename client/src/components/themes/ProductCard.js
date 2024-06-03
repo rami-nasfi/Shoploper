@@ -2,7 +2,7 @@ import React from "react";
 function ProductCard() {
   return (
     <div className="col ps-0">
-      <div className="card">
+      <div className="card p-3">
         <div className="card-body position-relative">
           <div className=" position-relative">
             <span class="position-absolute top-0 start-0  badge rounded bg-danger">Sale</span>

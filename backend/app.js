@@ -11,6 +11,7 @@ const categoryRouter = require("./routers/categoryRouter");
 const customerRouter = require("./routers/customerRouter");
 const orderRouter = require("./routers/orderRouter");
 const storeRouter = require("./routers/storeRouter");
+const themeRouter = require("./routers/themeRouter");
 const verifyToken = require("./middlewares/auth");
 
 // Middleware
@@ -24,6 +25,7 @@ app.use("/category", verifyToken, categoryRouter);
 app.use("/order", orderRouter);
 app.use("/customer", customerRouter);
 app.use("/store", storeRouter);
+app.use("/theme", themeRouter);
 
 // Start the server
 app.listen(PORT, () => {
