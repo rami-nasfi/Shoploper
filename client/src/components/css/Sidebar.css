@@ -1,5 +1,5 @@
-.w-20 {
-  width: 17vw !important;
+.w-10 {
+  width: 10vw !important;
 }
 .w-80 {
   width: 78vw !important;
@@ -51,7 +51,18 @@
 }
 .bg-blur {
   backdrop-filter: blur(10px);
+  z-index: 999;
 }
 .nav-width {
   width: 80%;
+}
+.badge-edit {
+  top: 0;
+  width: 40px;
+  height: 40px;
+  right: 0px;
+  translate: 30% -30%;
+}
+.custom-fit-content {
+  width: fit-content;
 }

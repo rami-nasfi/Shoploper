@@ -53,15 +53,26 @@ const createProduct = async (req, res) => {
 // Update product
 const updateProduct = async (req, res) => {
   try {
+    console.log(req.body);
     const id = req.params.id;
-    const existingImages = req.body.images || [];
-    console.log("existingImages", existingImages);
+    let existingImages = req.body.images || [];
     const { name, status, categoryID, price } = req.body;
-    const newImages = req.files.map((file) => file.path);
+
+    console.log("existingImages", existingImages);
+    if (!Array.isArray(existingImages)) {
+      existingImages = [existingImages];
+    }
+    const uploadPromises = req.files.map((file) => cloudinary.uploader.upload(file.path));
+    const uploadResults = await Promise.all(uploadPromises);
+    console.log("uploadResults", uploadResults);
+
+    const newImages = uploadResults.map((result) => result.secure_url);
+    console.log(newImages);
+
     const images = [...existingImages, ...newImages];
 
     const product = await Product.findByIdAndUpdate(id, { name, status, categoryID, price, images }, { new: true });
-    res.send(product);
+    res.send({ product: product, message: "Product updated successfully!" });
   } catch (error) {
     res.status(500).send({ message: "Error updating product", error });
   }

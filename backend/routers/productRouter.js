@@ -8,6 +8,6 @@ router.get("/", getAllProducts);
 router.get("/:id", getOneProduct);
 router.post("/create", multerUpload.array("images", 10), createProduct);
 router.delete("/:id", deleteProduct);
-router.put("/:id", multerUpload.single("image"), updateProduct);
+router.put("/:id", multerUpload.array("images", 10), updateProduct);
 
 module.exports = router;

@@ -9,7 +9,7 @@ function Dashboard() {
       </h2>
       <div className="row mt-5">
         <div className="col-md-4 ">
-          <div className="border rounded p-4 ">
+          <div className="shadow rounded p-4 ">
             <div className="d-flex flex-row justify-content-between align-items-center">
               <h4>Earnings</h4>
               <FaCommentDollar style={{ fontSize: "1.5em" }} />
@@ -18,7 +18,7 @@ function Dashboard() {
           </div>
         </div>
         <div className="col-md-4 ">
-          <div className="border rounded p-4 ">
+          <div className="shadow rounded p-4 ">
             <div className="d-flex flex-row justify-content-between align-items-center">
               <h4>Orders</h4>
               <FaBagShopping style={{ fontSize: "1.5em" }} />
@@ -27,7 +27,7 @@ function Dashboard() {
           </div>
         </div>
         <div className="col-md-4 ">
-          <div className="border rounded p-4 ">
+          <div className="shadow rounded p-4 ">
             <div className="d-flex flex-row justify-content-between align-items-center">
               <h4>Customers</h4>
               <FaUserGroup style={{ fontSize: "1.5em" }} />

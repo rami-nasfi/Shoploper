@@ -83,7 +83,7 @@ function Category() {
           </>
         )}
       </div>
-      <div className="border rounded p-2 ">
+      <div className="shadow rounded p-2 ">
         <div className="d-flex justify-content-between gap-2 m-2 ">
           <input
             type="text"

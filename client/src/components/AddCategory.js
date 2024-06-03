@@ -4,6 +4,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import Dropzone from "./Dropzone";
 import { useStoreID } from "../App";
+import { FaPen } from "react-icons/fa6";
 
 function AddEditCategory() {
   const navigate = useNavigate();
@@ -101,69 +102,91 @@ function AddEditCategory() {
   };
 
   return (
-    <div className="container d-flex justify-content-center align-items-center">
-      <form onSubmit={handleSubmit} className="container">
-        <div className="row d-flex justify-content-start">
-          <div className="col-md-6">
-            <div className="d-flex flex-column mb-3">
-              <label htmlFor="categoryName" className="form-label">
-                Category Name
-              </label>
-              <input type="text" className="form-control" id="categoryName" value={categoryName} onChange={(e) => setCategoryName(e.target.value)} />
+    <div className="container">
+      <div className="mb-5">
+        <h2>Add New Category</h2>
+      </div>
+      <div className=" d-flex justify-content-center align-items-center shadow rounded p-2 ">
+        <form onSubmit={handleSubmit} className="container mt-3">
+          <div className="row d-flex justify-content-start">
+            <div className="col-md-12 ">
+              <div className="position-relative custom-fit-content mb-3 border rounded-4">
+                <input type="file" id="fileInput" className="d-none" />
+                <label
+                  htmlFor="fileInput"
+                  className="rounded-circle position-absolute bg-light d-flex justify-content-center align-items-center badge-edit btn border-0"
+                >
+                  <FaPen />
+                </label>
+                <img src="https://res.cloudinary.com/dibvexzpm/image/upload/v1717191220/f3iwia3h4xuzn2ivezgx.png" alt="" className="rounded-4 w-10" />
+              </div>
+            </div>
+            <div className="col-md-6">
+              <div className="d-flex flex-column mb-3">
+                <label htmlFor="categoryName" className="form-label">
+                  Category Name
+                </label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="categoryName"
+                  value={categoryName}
+                  onChange={(e) => setCategoryName(e.target.value)}
+                />
+              </div>
+            </div>
+            <div className="col-md-6">
+              <div className="d-flex flex-column mb-3">
+                <label htmlFor="categoryCategory" className="form-label">
+                  Category
+                </label>
+                <select className="form-select" id="categoryCategory" value={categoryCategory} onChange={(e) => setCategoryCategory(e.target.value)}>
+                  {categoryCat && categoryCat.length > 0 ? (
+                    <>
+                      <option value="0">Select a category</option>
+                      {categoryCat.map((category) => (
+                        <option key={category._id} value={category._id}>
+                          {category.name}
+                        </option>
+                      ))}
+                    </>
+                  ) : (
+                    <option value="">No categories available</option>
+                  )}
+                </select>
+              </div>
+            </div>
+            <div className="col-md-6">
+              <div className="d-flex flex-column mb-3">
+                <label htmlFor="categoryStatus" className="form-label">
+                  Status
+                </label>
+                <select
+                  className="form-select"
+                  aria-label="Default select example"
+                  value={categoryStatus}
+                  onChange={(e) => setCategoryStatus(e.target.value)}
+                >
+                  <option value="0">Status</option>
+                  <option value="Active">Active</option>
+                  <option value="Inactive">Inactive</option>
+                </select>
+              </div>
+            </div>
+            <div className="col-md-12">
+              <div className="d-flex flex-column mb-3">
+                <label htmlFor="categoryImage" className="form-label">
+                  Image
+                </label>
+                <Dropzone className="p-5 border text-center rounded" onFilesChange={handleFilesChange} existingImage={categoryImage} />
+              </div>
             </div>
           </div>
-          <div className="col-md-6">
-            <div className="d-flex flex-column mb-3">
-              <label htmlFor="categoryCategory" className="form-label">
-                Category
-              </label>
-              <select className="form-select" id="categoryCategory" value={categoryCategory} onChange={(e) => setCategoryCategory(e.target.value)}>
-                {categoryCat && categoryCat.length > 0 ? (
-                  <>
-                    <option value="0">Select a category</option>
-                    {categoryCat.map((category) => (
-                      <option key={category._id} value={category._id}>
-                        {category.name}
-                      </option>
-                    ))}
-                  </>
-                ) : (
-                  <option value="">No categories available</option>
-                )}
-              </select>
-            </div>
-          </div>
-
-          <div className="col-md-6">
-            <div className="d-flex flex-column mb-3">
-              <label htmlFor="categoryStatus" className="form-label">
-                Status
-              </label>
-              <select
-                className="form-select"
-                aria-label="Default select example"
-                value={categoryStatus}
-                onChange={(e) => setCategoryStatus(e.target.value)}
-              >
-                <option value="0">Status</option>
-                <option value="Active">Active</option>
-                <option value="Inactive">Inactive</option>
-              </select>
-            </div>
-          </div>
-          <div className="col-md-12">
-            <div className="d-flex flex-column mb-3">
-              <label htmlFor="categoryImage" className="form-label">
-                Image
-              </label>
-              <Dropzone className="p-5 border text-center rounded" onFilesChange={handleFilesChange} existingImage={categoryImage} />
-            </div>
-          </div>
-        </div>
-        <button type="submit" className="btn btn-primary" id="liveToastBtn">
-          Submit
-        </button>
-      </form>
+          <button type="submit" className="btn btn-primary" id="liveToastBtn">
+            Submit
+          </button>
+        </form>
+      </div>
     </div>
   );
 }
