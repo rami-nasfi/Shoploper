@@ -2,9 +2,9 @@ const express = require("express");
 const cors = require("cors");
 
 const PORT = process.env.PORT || 8080;
-const app = express();
+const server = express();
 
-const main = require("./Connection");
+const main = require("./connection");
 const userRouter = require("./routers/userRouter");
 const productRouter = require("./routers/productRouter");
 const categoryRouter = require("./routers/categoryRouter");
@@ -15,20 +15,20 @@ const themeRouter = require("./routers/themeRouter");
 const verifyToken = require("./middlewares/auth");
 
 // Middleware
-app.use(express.json());
-app.use(cors());
+server.use(express.json());
+server.use(cors());
 
 // Define routes
-app.use("/user", userRouter);
-app.use("/product", verifyToken, productRouter);
-app.use("/category", verifyToken, categoryRouter);
-app.use("/order", orderRouter);
-app.use("/customer", customerRouter);
-app.use("/store", storeRouter);
-app.use("/theme", themeRouter);
+server.use("/user", userRouter);
+server.use("/product", verifyToken, productRouter);
+server.use("/category", verifyToken, categoryRouter);
+server.use("/order", orderRouter);
+server.use("/customer", customerRouter);
+server.use("/store", storeRouter);
+server.use("/theme", themeRouter);
 
 // Start the server
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
 
