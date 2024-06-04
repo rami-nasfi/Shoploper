@@ -1,8 +1,9 @@
 const Product = require("../models/productModel");
 const cloudinary = require("../utils/cloudinary");
+const mongoose = require("mongoose"); // Import mongoose
 
 // Display all products
-const getAllProducts = async (req, res) => {
+const getAllProductss = async (req, res) => {
   const page = parseInt(req.query.page) || 1;
   const perPage = parseInt(req.query.perPage) || 10;
   const filter = req.query.filter || "";
@@ -87,6 +88,67 @@ const deleteProduct = async (req, res) => {
     res.send(products);
   } catch (error) {
     res.status(500).send({ message: "Error deleting product", error });
+  }
+};
+
+const getAllProducts = async (req, res) => {
+  const page = parseInt(req.query.page) || 1;
+  const perPage = parseInt(req.query.perPage) || 10;
+  const filter = req.query.filter || "";
+  const status = req.query.status || "";
+  const storeID = req.query.storeID;
+  const filterCondition = { name: { $regex: filter, $options: "i" } };
+  if (status !== "") filterCondition.status = status;
+  try {
+    const totalProducts = await Product.aggregate([
+      {
+        $lookup: {
+          from: "categories",
+          localField: "categoryID",
+          foreignField: "_id",
+          as: "category",
+        },
+      },
+      { $unwind: "$category" },
+      {
+        $match: {
+          "category.storeID": new mongoose.Types.ObjectId(storeID),
+          ...filterCondition,
+        },
+      },
+      {
+        $group: {
+          _id: null,
+          count: { $sum: 1 },
+        },
+      },
+    ]);
+    const totalPages = Math.ceil(totalProducts[0].count / perPage) || 1;
+    const skip = (page - 1) * perPage;
+    const products = await Product.aggregate([
+      {
+        $lookup: {
+          from: "categories",
+          localField: "categoryID",
+          foreignField: "_id",
+          as: "category",
+        },
+      },
+      { $unwind: "$category" },
+      {
+        $match: {
+          "category.storeID": new mongoose.Types.ObjectId(storeID),
+          ...filterCondition,
+        },
+      },
+    ])
+      .skip(skip)
+      .limit(perPage);
+    console.log("products", products);
+    res.send({ products, totalPages });
+  } catch (error) {
+    console.error("Error fetching products for store:", error);
+    res.send(error);
   }
 };
 
