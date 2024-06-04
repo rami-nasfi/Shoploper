@@ -51,7 +51,7 @@ function Signup() {
   return (
     <>
       <div className="container d-flex justify-content-center align-items-center min-vh-100">
-        <div className="row bg-light m-3 p-2 rounded-3 p-5">
+        <div className="row bg-light m-3 p-2 rounded-3 p-5 shadow">
           <div className="col-md-6 p-0 d-flex justify-content-center align-items-center">
             <img className="img-fluid rounded-3 " src="./images/signin.png" alt="" />
           </div>
@@ -75,7 +75,7 @@ function Signup() {
                 <label htmlFor="" className="mb-1">
                   Password
                 </label>
-                <input type="text" className="form-control " name="password" onChange={(e) => setPassword(e.target.value)} />
+                <input type="password" className="form-control " name="password" onChange={(e) => setPassword(e.target.value)} />
                 {errors.password && <small className="text-danger">{errors.password}</small>}
               </div>
 

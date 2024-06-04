@@ -16,18 +16,19 @@ import Category from "./components/Category";
 import AddEditProduct from "./components/AddEditProduct";
 import Navbar from "./components/Navbar";
 import AddStore from "./components/AddStore";
-import ProtectedRoutes from "./util/ProtectedRoutes";
-import InitialRoute from "./util/InitialRoute";
+import ProtectedRoutes from "./utils/ProtectedRoutes";
+import InitialRoute from "./utils/InitialRoute";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Store from "./components/Store";
 import AddTeam from "./components/AddTeam";
 import AddEditCategory from "./components/AddEditCategory";
-import RoleRoutes from "./util/RoleRoutes";
-import { AuthProvider } from "./util/RoleContext";
+import RoleRoutes from "./utils/RoleRoutes";
+import { AuthProvider } from "./contexts/RoleContext";
 import Themes from "./components/Themes";
-import { ThemeProvider } from "./util/ThemeContext";
+import { ThemeProvider } from "./contexts/ThemeContext";
 import UnderConstractor from "./components/UnderConstractor";
+import PasswordReset from "./components/PasswordReset";
 export const useStoreID = createContext();
 
 function App() {
@@ -88,6 +89,7 @@ function App() {
                     <Route path="/login" element={<Login />} />
                     <Route path="/signup" element={<Signup />} />
                     <Route path="/store/:name" element={<Store />} />
+                    <Route path="/password-reset" element={<PasswordReset />} />
                     <Route path="*" element={<Signup />} />
                   </Routes>
                 </div>

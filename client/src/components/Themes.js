@@ -4,7 +4,7 @@ import CarouselImage from "./themes/CarouselImage";
 import CategoryListCard from "./themes/CategoryListCard";
 import ProductListCard from "./themes/ProductListCard";
 import Footer from "./themes/Footer";
-import { useTheme } from "../util/ThemeContext";
+import { useTheme } from "../contexts/ThemeContext";
 import { useStoreID } from "../App";
 import axios from "axios";
 

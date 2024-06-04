@@ -73,23 +73,21 @@ shoploper/
    ```sh
    cd client
    npm install
-   cd ../backend
+   cd ../server
    npm install
    ```
 
 3. **Set up environment variables:** Create a `.env` file in the server directory and add the following:
 
-   ```env backend 
-   SALT_ROUND=your_salt_round
-   SECRET_KEY=your_secret_key
-   MONGODB_URI=your_mongodb_url
-   FRONTEND_URL=your_frontend_url
-   CLOUDINARY_CLOUD_NAME=your_cloudinary_cloud
+   ```env
+   MONGO_URI=your_mongodb_uri
+   JWT_SECRET=your_jwt_secret
+   CLOUDINARY_CLOUD_NAME=your_cloudinary_cloud_name
    CLOUDINARY_API_KEY=your_cloudinary_api_key
-   CLOUDINARY_SECRET_KEY=your_cloudinary_secret_key
-   ```
-   ```env client 
-   REACT_APP_BACKEND_API=your_backend_api
+   CLOUDINARY_API_SECRET=your_cloudinary_api_secret
+   EMAILJS_USER_ID=your_emailjs_user_id
+   EMAILJS_SERVICE_ID=your_emailjs_service_id
+   EMAILJS_TEMPLATE_ID=your_emailjs_template_id
    ```
 
 4. **Run the development servers:**
@@ -97,9 +95,9 @@ shoploper/
      ```sh
      npm start
      ```
-   - In the `backend` directory:
+   - In the `server` directory:
      ```sh
-     npm start
+     npm run dev
      ```
 
 ## Usage
@@ -154,7 +152,7 @@ shoploper/
    ```sh
    git push origin feature/your-feature-name
    ```
-5. **Create a pull request.**
+5. \*\*Create a pull request.
 
 ## License
 

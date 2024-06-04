@@ -1,7 +1,7 @@
 import { useContext, useEffect, useMemo, useState } from "react";
 import { Reorder } from "framer-motion";
 import Modal from "./Modal";
-import { useTheme } from "../../util/ThemeContext";
+import { useTheme } from "../../contexts/ThemeContext";
 import axios from "axios";
 
 function MainNavigation() {

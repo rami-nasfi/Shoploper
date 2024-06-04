@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import "./css/Sidebar.css";
+import "../styles/Sidebar.css";
 import axios from "axios";
 import { FaUser, FaUserGroup, FaFileInvoiceDollar, FaFolderOpen, FaTag, FaChartPie, FaShop, FaBars } from "react-icons/fa6";
 import { useStoreID } from "../App";
 import bootstrapBundleMin from "bootstrap/dist/js/bootstrap.bundle.min";
-import { useAuth } from "../util/RoleContext";
+import { useAuth } from "../contexts/RoleContext";
 
 function Sidebar() {
   const [activeLink, setActiveLink] = useState("Home");

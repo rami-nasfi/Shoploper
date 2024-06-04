@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
-import { useNavigate } from "react-router-dom";
-import { useAuth } from "../util/RoleContext";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../contexts/RoleContext";
 import { useStoreID } from "../App";
 
 function Login() {
@@ -71,13 +71,16 @@ function Login() {
   const handleSignup = () => {
     navigate("/signup");
   };
+  const handleReset = () => {
+    navigate("/password-reset");
+  };
   useEffect(() => {
     localStorage.getItem("token") && navigate("/");
   }, []);
 
   return (
     <div className="container d-flex justify-content-center align-items-center vh-100">
-      <div className="row bg-light m-3 p-2 rounded-3 p-5">
+      <div className="row bg-light m-3 p-2 rounded-3 p-5 shadow">
         <div className="col-md-6 p-0 d-flex justify-content-center align-items-center">
           <img className="img-fluid rounded-3" src="./images/signin.png" alt="Sign In" />
         </div>
@@ -106,7 +109,9 @@ function Login() {
                 </label>
               </div>
               <div>
-                <small>Forget password</small>
+                <Link to={"/password-reset"} className="text-decoration-none">
+                  Forget password
+                </Link>
               </div>
             </div>
 
