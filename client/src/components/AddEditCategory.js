@@ -13,7 +13,8 @@ function AddEditCategory() {
   const [categoryStatus, setCategoryStatus] = useState("");
   const [categoryCategory, setCategoryCategory] = useState("");
   const [categoryCat, setCategoryCat] = useState([]);
-  const [categoryImage, setCategoryImage] = useState([]);
+  const [categoryImage, setCategoryImage] = useState(null);
+  const [selectedFile, setSelectedFile] = useState("https://res.cloudinary.com/dibvexzpm/image/upload/v1717191220/f3iwia3h4xuzn2ivezgx.png");
   const { storeID } = useContext(useStoreID);
   console.log("storeID", storeID);
 
@@ -23,6 +24,7 @@ function AddEditCategory() {
         try {
           const res = await axios.get(`${process.env.REACT_APP_BACKEND_API}/category/${id}`, {
             headers: {
+              "Content-Type": "application/json",
               Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
           });
@@ -30,7 +32,7 @@ function AddEditCategory() {
           setCategoryName(category.name);
           setCategoryStatus(category.status);
           setCategoryCategory(category.categoryID);
-          setCategoryImage(category.image || []);
+          setCategoryImage(category.image);
         } catch (error) {
           console.error("Error fetching category:", error);
         }
@@ -46,14 +48,14 @@ function AddEditCategory() {
       const formData = new FormData();
       formData.append("name", categoryName);
       formData.append("status", categoryStatus);
+      formData.append("image", categoryImage);
       categoryCategory && formData.append("categoryID", categoryCategory);
-      formData.append("image", categoryImage[0]);
       formData.append("storeID", storeID);
-      console.log(categoryImage[0]);
+      console.log("formData", ...formData);
+
       if (id) {
         await axios.put(`${process.env.REACT_APP_BACKEND_API}/category/${id}`, formData, {
           headers: {
-            "Content-Type": "multipart/form-data",
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         });
@@ -63,7 +65,6 @@ function AddEditCategory() {
       } else {
         await axios.post(`${process.env.REACT_APP_BACKEND_API}/category/create`, formData, {
           headers: {
-            "Content-Type": "multipart/form-data",
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         });
@@ -97,10 +98,16 @@ function AddEditCategory() {
     }
   }, [storeID]);
 
-  const handleFilesChange = (newFiles) => {
-    setCategoryImage(newFiles);
-  };
-
+  function handleImage(event) {
+    if (event.target.files[0]) {
+      setCategoryImage(event.target.files[0]);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setSelectedFile(reader.result);
+      };
+      reader.readAsDataURL(event.target.files[0]);
+    }
+  }
   return (
     <div className="container">
       <div className="mb-5">
@@ -110,15 +117,15 @@ function AddEditCategory() {
         <form onSubmit={handleSubmit} className="container mt-3">
           <div className="row d-flex justify-content-start">
             <div className="col-md-12 ">
-              <div className="position-relative custom-fit-content mb-3 border rounded-4">
-                <input type="file" id="fileInput" className="d-none" />
+              <div className="position-relative custom-fit-content mb-3 border rounded-2 wh-10">
+                <input type="file" id="fileInput" className="d-none" onChange={handleImage} />
                 <label
                   htmlFor="fileInput"
                   className="rounded-circle position-absolute bg-light d-flex justify-content-center align-items-center badge-edit btn border-0"
                 >
                   <FaPen />
                 </label>
-                <img src="https://res.cloudinary.com/dibvexzpm/image/upload/v1717191220/f3iwia3h4xuzn2ivezgx.png" alt="" className="rounded-4 w-10" />
+                <img src={id && typeof categoryImage === "string" ? categoryImage : selectedFile} alt="" className="rounded-4 wh-10" />
               </div>
             </div>
             <div className="col-md-6">
@@ -144,11 +151,14 @@ function AddEditCategory() {
                   {categoryCat && categoryCat.length > 0 ? (
                     <>
                       <option value="0">Select a category</option>
-                      {categoryCat.map((category) => (
-                        <option key={category._id} value={category._id}>
-                          {category.name}
-                        </option>
-                      ))}
+                      {categoryCat.map((category) => {
+                        if (id !== category._id)
+                          return (
+                            <option key={category._id} value={category._id}>
+                              {category.name}
+                            </option>
+                          );
+                      })}
                     </>
                   ) : (
                     <option value="">No categories available</option>
@@ -171,14 +181,6 @@ function AddEditCategory() {
                   <option value="Active">Active</option>
                   <option value="Inactive">Inactive</option>
                 </select>
-              </div>
-            </div>
-            <div className="col-md-12">
-              <div className="d-flex flex-column mb-3">
-                <label htmlFor="categoryImage" className="form-label">
-                  Image
-                </label>
-                <Dropzone className="p-5 border text-center rounded" onFilesChange={handleFilesChange} existingImage={categoryImage} />
               </div>
             </div>
           </div>

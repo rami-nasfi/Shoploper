@@ -12,6 +12,6 @@ router.post("/create", multerUpload.single("image"), createCategory);
 
 router.delete("/:id", deleteCategory);
 
-router.put("/:id", updateCategory);
+router.put("/:id", multerUpload.single("image"), updateCategory);
 
 module.exports = router;

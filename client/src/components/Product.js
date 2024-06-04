@@ -122,12 +122,12 @@ function Product() {
           <table className="table table-striped ">
             <thead>
               <tr>
-                <th scope="col" className="">
+                <th scope="col" className="d-none d-lg-table-cell">
                   <div className="form-check">
                     <input className="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
                   </div>
                 </th>
-                <th scope="col" className="col-1">
+                <th scope="col" className="col-1 d-none d-lg-table-cell">
                   image
                 </th>
                 <th scope="col col-3">Name</th>
@@ -148,12 +148,12 @@ function Product() {
               ) : (
                 products.map((product) => (
                   <tr key={product._id}>
-                    <td className="align-middle">
+                    <td className="align-middle d-none d-lg-table-cell">
                       <div className="form-check">
                         <input className="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
                       </div>
                     </td>
-                    <td className="align-middle">
+                    <td className="align-middle d-none d-lg-table-cell">
                       <div className="">
                         <img src={product.images["0"]} className="rounded w-16" alt={product.name} />
                       </div>
@@ -166,11 +166,11 @@ function Product() {
                       <>
                         <td className="align-middle text-center">
                           <div className="d-flex justify-content-evenly">
-                            <a className="d-flex align-items-center" onClick={() => handleEditClick(product._id)}>
+                            <a className="d-flex align-items-center btn border-0" onClick={() => handleEditClick(product._id)}>
                               <FaPenToSquare className="  " />
                             </a>
                             <a
-                              className="d-flex align-items-center "
+                              className="d-flex align-items-center btn border-0"
                               data-bs-toggle="modal"
                               data-bs-target="#exampleModal"
                               onClick={() => setDeleteItemId(product._id)}

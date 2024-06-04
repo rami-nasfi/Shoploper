@@ -22,7 +22,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Store from "./components/Store";
 import AddTeam from "./components/AddTeam";
-import AddCategory from "./components/AddCategory";
+import AddEditCategory from "./components/AddEditCategory";
 import RoleRoutes from "./util/RoleRoutes";
 import { AuthProvider } from "./util/RoleContext";
 import Themes from "./components/Themes";
@@ -50,9 +50,10 @@ function App() {
             <ToastContainer />
             <div className="d-lg-flex">
               {storeID && <Sidebar />}
-              <div className=" d-flex  gap-5 flex-grow-1  w-80 flex-column ">
-                <Navbar />
-                <div className="contentBlock px-3">
+              <div className=" d-flex  gap-5 flex-grow-1 custom-w-80 flex-column ">
+                {storeID && <Navbar />}
+
+                <div className={storeID && "contentBlock"}>
                   <Routes>
                     <Route element={<ProtectedRoutes />}>
                       <Route element={<InitialRoute />}>
@@ -64,7 +65,8 @@ function App() {
                         <Route element={<RoleRoutes />}>
                           <Route path="/add-product" element={<AddEditProduct />} />
                           <Route path="/edit-product/:id" element={<AddEditProduct />} />
-                          <Route path="/add-category" element={<AddCategory />} />
+                          <Route path="/add-category" element={<AddEditCategory />} />
+                          <Route path="/edit-category/:id" element={<AddEditCategory />} />
                           <Route path="/navigation" element={<UnderConstractor />} />
                           <Route path="/pages" element={<UnderConstractor />} />
                           <Route path="/team" element={<AddTeam />} />

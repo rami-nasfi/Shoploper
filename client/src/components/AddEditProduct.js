@@ -44,22 +44,20 @@ function AddEditProduct() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      console.log("firsproductImagest productImages productImages:", productImages);
       const formData = new FormData();
       formData.append("name", productName);
       formData.append("status", productStatus);
       formData.append("categoryID", productCategory);
       formData.append("price", productPrice);
 
-      productImages.forEach((image, index) => {
+      productImages.forEach((image) => {
         formData.append(`images`, image);
       });
-      console.log("this formdata :", ...formData);
-
+      console.log(...formData);
       if (id) {
         let res = await axios.put(`${process.env.REACT_APP_BACKEND_API}/product/${id}`, formData, {
           headers: {
-            "Content-Type": "multipart/form-data",
+            // "Content-Type": "multipart/form-data",
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         });

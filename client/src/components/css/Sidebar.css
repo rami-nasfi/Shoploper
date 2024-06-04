@@ -1,8 +1,9 @@
-.w-10 {
-  width: 10vw !important;
+.wh-10 {
+  width: 100px !important;
+  height: 100px !important;
 }
-.w-80 {
-  width: 78vw !important;
+.custom-w-80 {
+  width: 80vw !important;
 }
 .w-16 {
   width: 48px;
@@ -42,20 +43,18 @@
   #offcanvasSidebar {
     position: absolute !important;
   }
-  .w-80 {
-    width: auto !important;
+  .custom-w-80 {
+    width: 100vw !important;
   }
 }
 .contentBlock {
-  margin-top: 124px !important;
+  margin-top: 75px !important;
 }
 .bg-blur {
   backdrop-filter: blur(10px);
   z-index: 999;
 }
-.nav-width {
-  width: 80%;
-}
+
 .badge-edit {
   top: 0;
   width: 40px;
@@ -65,4 +64,21 @@
 }
 .custom-fit-content {
   width: fit-content;
+}
+.offcanvas-body {
+  overflow-y: auto; /* Enable vertical scrolling if needed */
+  -webkit-overflow-scrolling: touch; /* Enable smooth scrolling on iOS */
+}
+
+.offcanvas-body::-webkit-scrollbar {
+  width: 8px; /* Adjust the scrollbar width */
+}
+
+.offcanvas-body::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2); /* Color of the scrollbar thumb */
+  border-radius: 4px; /* Rounded corners for the scrollbar thumb */
+}
+
+.offcanvas-body::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(0, 0, 0, 0.4); /* Color on hover */
 }

@@ -36,7 +36,7 @@ const getAllCat = async (req, res) => {
 //display one category
 const getOneCategory = async (req, res) => {
   try {
-    let category = await Category.findOne({ id: req.params.id });
+    let category = await Category.findById(req.params.id);
     res.send(category);
   } catch (error) {
     res.send(error);
@@ -49,7 +49,7 @@ const createCategory = async (req, res) => {
     let category = req.body;
     const image = await cloudinary.uploader.upload(req.file.path);
     category.image = image.secure_url;
-    console.log("category", category);
+    // console.log("category", category);
     await Category.create(category);
     let categories = await Category.find();
     res.send(categories);
@@ -62,8 +62,12 @@ const createCategory = async (req, res) => {
 const updateCategory = async (req, res) => {
   try {
     let id = req.params.id;
-    let data = req.body;
-    let category = await Category.findByIdAndUpdate(id, data);
+    let { name, status, image, categoryID } = req.body;
+    if (req.file) {
+      const images = await cloudinary.uploader.upload(req.file.path);
+      image = images.secure_url;
+    }
+    let category = await Category.findByIdAndUpdate(id, { name, status, image, categoryID });
     res.send(category);
   } catch (error) {
     res.send(error);
