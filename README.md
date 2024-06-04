@@ -80,16 +80,16 @@ shoploper/
 3. **Set up environment variables:** Create a `.env` file in the server directory and add the following:
 
    ```env backend 
-  SALT_ROUND=your_salt_round
-  SECRET_KEY=your_secret_key
-  MONGODB_URI=your_mongodb_url
-  FRONTEND_URL=your_frontend_url
-  CLOUDINARY_CLOUD_NAME=your_cloudinary_cloud
-  CLOUDINARY_API_KEY=your_cloudinary_api_key
-  CLOUDINARY_SECRET_KEY=your_cloudinary_secret_key
+   SALT_ROUND=your_salt_round
+   SECRET_KEY=your_secret_key
+   MONGODB_URI=your_mongodb_url
+   FRONTEND_URL=your_frontend_url
+   CLOUDINARY_CLOUD_NAME=your_cloudinary_cloud
+   CLOUDINARY_API_KEY=your_cloudinary_api_key
+   CLOUDINARY_SECRET_KEY=your_cloudinary_secret_key
    ```
-```env client 
-  REACT_APP_BACKEND_API=your_backend_api
+   ```env client 
+   REACT_APP_BACKEND_API=your_backend_api
    ```
 
 4. **Run the development servers:**
