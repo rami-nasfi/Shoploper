@@ -97,7 +97,7 @@ shoploper/
      ```sh
      npm start
      ```
-   - In the `server` directory:
+   - In the `backend` directory:
      ```sh
      npm start
      ```
@@ -154,7 +154,7 @@ shoploper/
    ```sh
    git push origin feature/your-feature-name
    ```
-5. \*\*Create a pull request.
+5. **Create a pull request.**
 
 ## License
 
