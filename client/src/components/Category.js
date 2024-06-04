@@ -37,7 +37,6 @@ function Category() {
           },
         }
       );
-      console.log("#######", res.data.categories);
       setCategories(res.data.categories);
       setTotalPages(res.data.totalPages);
       if (currentPage > totalPages) {

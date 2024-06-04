@@ -30,14 +30,12 @@ function AddStore() {
 
     try {
       let res = await axios.post(`${process.env.REACT_APP_BACKEND_API}/store/create`, { name: errorMsg, userID: localStorage.getItem("id") });
-      console.log(res);
       let storeID = res.data[res.data.length - 1]._id;
       setStoreID(storeID);
       localStorage.setItem("storeID", storeID);
       handleClick();
     } catch (error) {
       setErrors({ errorMsg: error.response.data.errorMsg });
-      console.log("error #  #", error);
     }
   };
 

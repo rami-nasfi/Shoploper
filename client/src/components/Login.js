@@ -42,7 +42,6 @@ function Login() {
 
     const data = { email, password };
     try {
-      console.log("login start");
       const res = await axios.post(`${process.env.REACT_APP_BACKEND_API}/user/login/`, data);
       token = res.data.token;
       id = res.data.id;
@@ -59,7 +58,6 @@ function Login() {
       localStorage.setItem("name", name);
       localStorage.setItem("role", role);
       auth.setRole(role);
-      console.log("login", auth);
       decoded = jwtDecode(token);
       navigate("/");
     } catch (error) {

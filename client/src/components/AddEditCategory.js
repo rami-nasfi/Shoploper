@@ -16,7 +16,6 @@ function AddEditCategory() {
   const [categoryImage, setCategoryImage] = useState(null);
   const [selectedFile, setSelectedFile] = useState("https://res.cloudinary.com/dibvexzpm/image/upload/v1717191220/f3iwia3h4xuzn2ivezgx.png");
   const { storeID } = useContext(useStoreID);
-  console.log("storeID", storeID);
 
   useEffect(() => {
     const fetchCategory = async () => {
@@ -51,7 +50,6 @@ function AddEditCategory() {
       formData.append("image", categoryImage);
       categoryCategory && formData.append("categoryID", categoryCategory);
       formData.append("storeID", storeID);
-      console.log("formData", ...formData);
 
       if (id) {
         await axios.put(`${process.env.REACT_APP_BACKEND_API}/category/${id}`, formData, {
@@ -87,7 +85,6 @@ function AddEditCategory() {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         });
-        console.log("res.data ######", res.data);
         setCategoryCat(res.data.categories);
       } catch (error) {
         console.error("Error fetching categories:", error);

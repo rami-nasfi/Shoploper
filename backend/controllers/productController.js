@@ -54,21 +54,17 @@ const createProduct = async (req, res) => {
 // Update product
 const updateProduct = async (req, res) => {
   try {
-    console.log(req.body);
     const id = req.params.id;
     let existingImages = req.body.images || [];
     const { name, status, categoryID, price } = req.body;
 
-    console.log("existingImages", existingImages);
     if (!Array.isArray(existingImages)) {
       existingImages = [existingImages];
     }
     const uploadPromises = req.files.map((file) => cloudinary.uploader.upload(file.path));
     const uploadResults = await Promise.all(uploadPromises);
-    console.log("uploadResults", uploadResults);
 
     const newImages = uploadResults.map((result) => result.secure_url);
-    console.log(newImages);
 
     const images = [...existingImages, ...newImages];
 
@@ -144,7 +140,6 @@ const getAllProducts = async (req, res) => {
     ])
       .skip(skip)
       .limit(perPage);
-    console.log("products", products);
     res.send({ products, totalPages });
   } catch (error) {
     console.error("Error fetching products for store:", error);

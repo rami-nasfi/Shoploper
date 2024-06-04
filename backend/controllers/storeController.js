@@ -58,7 +58,6 @@ const createStore = async (req, res) => {
       return res.status(500).send({ errorMsg: "Fill the required information" });
     }
     const isReserved = await Store.find({ name });
-    console.log(isReserved.length);
     if (isReserved.length > 0) {
       return res.status(500).send({ errorMsg: "Name not available" });
     }

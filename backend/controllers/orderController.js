@@ -38,9 +38,7 @@ const updateOrder = async (req, res) => {
   try {
     let id = req.params.id;
     let data = req.body;
-    console.log("testtttttttttt", id, data);
     let order = await Order.findByIdAndUpdate(id, data);
-    console.log("testtttttttttt", order);
     res.send(order);
   } catch (error) {
     res.send(error);

@@ -69,7 +69,6 @@ function Sidebar() {
   };
   useEffect(() => {
     if (storeID) {
-      console.log("Store ID has been set:", storeID);
       userStore();
     }
   }, [storeID]);

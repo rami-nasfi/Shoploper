@@ -19,7 +19,6 @@ function Dropzone({ className, onFilesChange, existingImages }) {
         setFiles((previousFiles) => [...previousFiles, ...newFiles]);
         onFilesChange([...files, ...newFiles]);
       }
-      console.log("onFilesChange", onFilesChange);
     },
     [files, onFilesChange]
   );

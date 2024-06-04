@@ -31,7 +31,6 @@ const AddTeam = () => {
       ...formData,
       [e.target.name]: e.target.value,
     });
-    console.log("firstformData", formData);
   };
   const generatePassword = () => {
     const length = 8;
@@ -46,7 +45,6 @@ const AddTeam = () => {
     try {
       const res = await axios.get(`${process.env.REACT_APP_BACKEND_API}
 /user/store/${storeID}`);
-      console.log("res.data.users", res.data.users);
       setTeams(res.data.users);
     } catch (error) {
       console.error("Error fetching products:", error);
@@ -59,7 +57,6 @@ const AddTeam = () => {
       await userStore();
       await signup(); // Wait for signup to finish
       await sendEmail(); // Wait for email sending to finish
-      console.log("Form data submitted successfully!");
     } catch (error) {
       console.error("Error submitting form data:", error);
     }
@@ -69,7 +66,6 @@ const AddTeam = () => {
   const sendEmail = async () => {
     try {
       const emailResponse = await emailjs.send("service_6fh9lyr", "template_qjhwsi2", formData, "_zXp3UHlraCXBEQ1O");
-      console.log("Email sent successfully:", emailResponse.status, emailResponse.text);
     } catch (error) {
       console.error("Error sending email:", error);
       throw error; // Propagate the error for better error handling
@@ -85,14 +81,11 @@ const AddTeam = () => {
         role: "staff",
         storeID: storeID,
       };
-      console.log("userData ddd", userData);
-      console.log("dataaaaa", formData);
       const res = await axios.post(
         `${process.env.REACT_APP_BACKEND_API}
 /user/signup`,
         userData
       );
-      console.log("User signed up successfully:", res.data);
     } catch (error) {
       console.error("Error signing up user:", error);
       throw error; // Propagate the error for better error handling

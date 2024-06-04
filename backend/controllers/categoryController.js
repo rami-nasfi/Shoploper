@@ -49,8 +49,7 @@ const createCategory = async (req, res) => {
     let category = req.body;
     const image = await cloudinary.uploader.upload(req.file.path);
     category.image = image.secure_url;
-    // console.log("category", category);
-    await Category.create(category);
+    //     await Category.create(category);
     let categories = await Category.find();
     res.send(categories);
   } catch (error) {

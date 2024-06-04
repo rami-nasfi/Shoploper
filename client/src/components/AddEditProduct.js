@@ -15,7 +15,6 @@ function AddEditProduct() {
   const [productCat, setProductCat] = useState([]);
   const [productImages, setProductImages] = useState([]);
   const { storeID } = useContext(useStoreID);
-  console.log("storeID", storeID);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -53,7 +52,6 @@ function AddEditProduct() {
       productImages.forEach((image) => {
         formData.append(`images`, image);
       });
-      console.log(...formData);
       if (id) {
         let res = await axios.put(`${process.env.REACT_APP_BACKEND_API}/product/${id}`, formData, {
           headers: {
@@ -90,7 +88,6 @@ function AddEditProduct() {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         });
-        console.log("res.data ######", res.data);
         setProductCat(res.data.categories);
       } catch (error) {
         console.error("Error fetching categories:", error);

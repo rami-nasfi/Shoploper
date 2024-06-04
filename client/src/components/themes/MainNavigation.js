@@ -8,7 +8,6 @@ function MainNavigation() {
   const [edit, setEdit] = useState(false);
   const [x, setX] = useState({});
   const theme = useTheme();
-  console.log("theme=>", theme.theme.nav);
 
   const [items, setItems] = useState([]);
 
@@ -26,12 +25,10 @@ function MainNavigation() {
     return <Modal itemEdit={x} handleAddItem={handleAddItem} setX={setX} />;
   }, [x]);
 
+  useEffect(() => {}, [x]);
   useEffect(() => {
-    console.log("x#####:", x);
-  }, [x]);
-  useEffect(() => {
-    if (theme.theme.nav) setItems(theme.theme.nav);
-  }, [theme.theme.nav]);
+    if (theme.theme) setItems(theme.theme.nav || []);
+  }, [theme]);
 
   const handleReorder = async (newItems) => {
     setItems(newItems);
@@ -41,10 +38,7 @@ function MainNavigation() {
     }));
     try {
       const res = await axios.post(`${process.env.REACT_APP_BACKEND_API}/theme/update/${theme.theme._id}`, { nav: newItems });
-      console.log(res);
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
   return (
     <div>

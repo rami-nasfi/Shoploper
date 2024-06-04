@@ -9,7 +9,7 @@ import { useAuth } from "../contexts/RoleContext";
 
 function Product() {
   const navigate = useNavigate();
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState(null);
   const [filter, setFilter] = useState("");
   const [status, setStatus] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -139,7 +139,7 @@ function Product() {
               </tr>
             </thead>
             <tbody>
-              {products.length === 0 ? (
+              {!products ? (
                 <tr>
                   <td colSpan="6" className="text-center">
                     There are no products available.

@@ -16,10 +16,12 @@ function Themes() {
     const fetchTheme = async (req, res) => {
       try {
         const res = await axios.get(`${process.env.REACT_APP_BACKEND_API}/theme/${storeID}`);
-        theme.setTheme(res.data);
-      } catch (error) {
-        console.log(error);
-      }
+        if (res.data !== "") {
+          theme.setTheme(res.data);
+        } else {
+          theme.setTheme({});
+        }
+      } catch (error) {}
     };
     fetchTheme();
   }, [storeID]);

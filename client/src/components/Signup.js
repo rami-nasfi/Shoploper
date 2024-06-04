@@ -40,10 +40,8 @@ function Signup() {
       return;
     }
     setErrors({});
-    console.log(data);
     let res = await axios.post(`${process.env.REACT_APP_BACKEND_API}/user/signup`, data);
     navigate("/login");
-    console.log(res);
   }
   const handleLogin = () => {
     navigate("/login");

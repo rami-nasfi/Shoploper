@@ -10,7 +10,6 @@ require("dotenv").config();
 const getAllUsers = async (req, res) => {
   try {
     let users = await User.find({ storeID: req.params.storeID });
-    console.log("display alllll", users);
     res.send({ users });
   } catch (error) {
     res.send(error);
@@ -75,7 +74,6 @@ const signupUser = async (req, res) => {
       return res.send({ msg: "Email already exist please login or register with a new email" });
     }
     let hashPassword = await bcrypt.hash(password, +process.env.SALT_ROUND);
-    console.log(hashPassword);
     await User.create({ email, password: hashPassword, name, role, storeID });
     return res.send({ email, hashPassword, name, role, storeID });
   } catch (error) {
@@ -86,7 +84,6 @@ const signupUser = async (req, res) => {
 //login user
 const loginUser = async (req, res) => {
   try {
-    console.log("login start");
     const { email, password } = req.body;
     if (!email || !password) {
       return res.status(400).send({ msg: "Fill in both email and password" });
@@ -101,7 +98,6 @@ const loginUser = async (req, res) => {
       return res.status(401).send({ msg: "Invalid email or password" });
     }
     const store = (await Store.find({ userID: user.id })) || [];
-    console.log(store);
     let token = jwt.sign({ id: user.id, name: user.name, email: user.email }, process.env.SECRET_KEY);
     let id = user.id;
     let name = user.name;

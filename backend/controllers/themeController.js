@@ -15,12 +15,10 @@ const updateTheme = async (req, res) => {
   try {
     let id = req.params.id;
     let data = req.body;
-    console.log("id", data);
-    let theme = await Theme.findByIdAndUpdate(id, data);
+        let theme = await Theme.findByIdAndUpdate(id, data);
     res.send(theme.data);
   } catch (error) {
-    console.log(error);
-  }
+      }
 };
 
 module.exports = { themeData, updateTheme };

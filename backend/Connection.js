@@ -3,9 +3,7 @@ require("dotenv").config();
 const URI = process.env.MONGODB_URI;
 
 main()
-  .then(() => {
-    console.log("Connected to MongoDB");
-  })
+  .then(() => {})
   .catch((err) => {
     console.error("Error connecting to MongoDB:", err);
   });
